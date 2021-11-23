@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dashboard.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,9 +11,20 @@ namespace Dashboard.Controllers
     {
         // GET: api/<AboutController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ObjectResult Get()
         {
-            return new string[] { "value1", "value2" };
+            About about = new About();
+
+            about.Server = new Server()
+            {
+                CurrentTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                Services = new Service[0]
+            };
+            about.Client = new Client()
+            {
+                HostIp = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString(),
+            };
+            return Ok(about);
         }
 
         // GET api/<AboutController>/5
