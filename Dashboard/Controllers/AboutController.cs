@@ -10,12 +10,12 @@ namespace Dashboard.Controllers
         [HttpGet]
         public ObjectResult Get()
         {
-            About about = new About();
+            AboutModel about = new AboutModel();
 
             about.Server = new Server()
             {
                 CurrentTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
-                Services = new Service[0]
+                Services = new AboutServiceModel[0]
             };
             about.Client = new Client()
             {

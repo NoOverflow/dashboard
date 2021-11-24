@@ -1,7 +1,7 @@
 ﻿namespace Dashboard.Models
 {
     [Serializable]
-    public class Service
+    public class AboutWidgetModel
     {
 
     }

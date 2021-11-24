@@ -1,0 +1,10 @@
+﻿@using Dashboard.Models;
+
+<div class="card" id="content">
+    <DynamicComponent Type="@(Type.GetType(Widget.SubRendererTypeName))" />
+</div>
+
+@code {
+    [Parameter]
+    public Widget Widget { get; set; }
+}

@@ -16,11 +16,11 @@ namespace Dashboard.Models
         public long CurrentTime { get; set; }
 
         [JsonPropertyName("services")]
-        public Service[] Services { get; set; }
+        public AboutServiceModel[] Services { get; set; }
     }
 
     [Serializable]
-    public class About
+    public class AboutModel
     {
         [JsonPropertyName("client")]
         public Client Client { get; set; }
