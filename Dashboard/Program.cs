@@ -1,4 +1,5 @@
 using Dashboard.Data;
+using Dashboard.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -9,6 +10,7 @@ builder.Services.AddMvc(options => options.EnableEndpointRouting = false).SetCom
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<TestService>();
 var app = builder.Build();
 
 
