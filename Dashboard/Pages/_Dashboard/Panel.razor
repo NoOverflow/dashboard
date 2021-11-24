@@ -1,7 +1,52 @@
 ﻿@page "/dashboard"
+@using Dashboard.Shared.Widgets;
 
 <PageTitle>Panel</PageTitle>
-<img id="logo" src="/res/logo.svg"/>
+<img id="logo" src="res/logo.svg" />
+<div id="background-ellipses">
+    <img id="e1" draggable="false" src="res/ellipses/e1.svg" />
+    <img id="e2" draggable="false" src="res/ellipses/e2.svg" />
+    <img id="e3" draggable="false" src="res/ellipses/e3.svg" />
+    <img id="e4" draggable="false" src="res/ellipses/e4.svg" />
+    <img id="e5" draggable="false" src="res/ellipses/e5.svg" />
+    <img id="e6" draggable="false" src="res/ellipses/e6.svg" />
+    <img id="e7" draggable="false" src="res/ellipses/e7.svg" />
+</div>
+<div id="widgets">
+    <div id="top-widgets">
+        <div id="top-one">
+            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        </div>
+        <div id="top-two">
+            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        </div>
+        <div id="top-three">
+            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        </div>
+    </div>
+    <div id="middle-widgets">
+        <div id="middle-one" class="widget-card">
+
+        </div>
+        <div id="middle-two" class="widget-card">
+
+        </div>
+        <div id="middle-three" class="widget-card">
+
+        </div>
+    </div>
+    <div id="bottom-widgets">
+        <div id="bottom-one" class="widget-card">
+
+        </div>
+        <div id="bottom-two" class="widget-card">
+
+        </div>
+        <div id="bottom-three" class="widget-card">
+
+        </div>
+    </div>
+</div>
 
 @code {
 
