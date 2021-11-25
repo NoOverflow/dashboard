@@ -1,10 +1,47 @@
 ﻿@using Dashboard.Models;
 
-<div class="card" id="content">
+<div class="card draggable" style="order: @Id;" draggable="true" id="content" 
+    ondragover="event.preventDefault();" 
+    @ondragstart="@OnDragStart" @ondrop="@OnDragDrop">
+    <p>@WidgetId</p>
     <DynamicComponent Type="@(Type.GetType(Widget.SubRendererTypeName))" />
 </div>
 
 @code {
+    [CascadingParameter]
+    public WidgetsContainer Container { get; set; } = null;
+
     [Parameter]
     public Widget Widget { get; set; }
+
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    private Guid WidgetId;
+
+    protected override void OnInitialized()
+    {
+        WidgetId = Guid.NewGuid();
+        base.OnInitialized();
+    }
+
+    void OnDragStart(DragEventArgs e)
+    {
+        if (Container != null)
+        {
+            Container.DraggedWidget = this;
+        }
+    }
+
+    void OnDragDrop(DragEventArgs e)
+    {
+        int holder = this.Id;
+
+        if (Container != null && Container.DraggedWidget != null) 
+        {
+            this.Id = Container.DraggedWidget.Id;
+            Container.DraggedWidget.Id = holder;
+            Container.DraggedWidget.StateHasChanged();
+        }
+    }
 }

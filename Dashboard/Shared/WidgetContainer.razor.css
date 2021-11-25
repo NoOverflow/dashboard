@@ -11,3 +11,11 @@
     border-color: rgba(235, 235, 235, 0.1);
     border-width: 1px;
 }
+
+.draggable {
+    cursor: grab;
+}
+
+p {
+    color: white;
+}

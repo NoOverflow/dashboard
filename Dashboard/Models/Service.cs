@@ -1,5 +1,13 @@
 ﻿namespace Dashboard.Models
 {
+    public enum CardSize
+    {
+        SMALL,
+        MEDIUM,
+        LARGE,
+        SQUARE
+    }
+
     public class Service
     {
         /// <summary>

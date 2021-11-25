@@ -13,17 +13,12 @@
     <img id="e7" draggable="false" src="res/ellipses/e7.svg" />
 </div>
 <div id="widgets">
-    <div id="top-widgets">
-        <div id="top-one">
-            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
-        </div>
-        <div id="top-two">
-            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
-        </div>
-        <div id="top-three">
-            <WidgetContainer Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
-        </div>
-    </div>
+    <WidgetsContainer StyleId="top-widgets">
+        <WidgetContainer Id="0" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="1" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="2" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+    </WidgetsContainer>
+
     <div id="middle-widgets">
         <div id="middle-one" class="widget-card">
 
