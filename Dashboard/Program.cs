@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DashboardContextConnection");builder.Services.AddDbContext<DashboardContext>(options =>
-    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DashboardContext>();
-// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DashboardContextConnection");
+
+builder.Services.AddDbContext<DashboardContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DashboardContext>();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
