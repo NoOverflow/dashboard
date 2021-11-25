@@ -42,6 +42,7 @@
             this.Id = Container.DraggedWidget.Id;
             Container.DraggedWidget.Id = holder;
             Container.DraggedWidget.StateHasChanged();
+            Container.DraggedWidget = null;
         }
     }
 }
