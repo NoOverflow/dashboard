@@ -19,6 +19,15 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TestService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthentication().AddSpotify(options =>
+{
+    options.Scope.Add("user-read-private");
+    options.Scope.Add("user-read-email");
+    options.UsePkce = true;
+    options.ClientId = "31136507629443baa7494abbc7856cd9";
+    options.ClientSecret = builder.Configuration["spotify-app-secrets"];
+    options.CallbackPath = "/spotify-callback";
+});
 var app = builder.Build();
 
 
