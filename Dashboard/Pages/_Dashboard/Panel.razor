@@ -12,6 +12,7 @@
     <img id="e6" draggable="false" src="res/ellipses/e6.svg" />
     <img id="e7" draggable="false" src="res/ellipses/e7.svg" />
 </div>
+
 <div id="widgets">
     <WidgetsContainer StyleId="top-widgets">
         <WidgetContainer Id="0" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
@@ -43,6 +44,20 @@
     </div>
 </div>
 
-@code {
+@if (ShowMenu)
+{
+    <ServicesMenu />
+}
 
+<button id="services-menu" @onclick="@OnOpenServicesMenuButtonClicked">
+    ^
+</button>
+
+@code {
+    bool ShowMenu = false;
+
+    void OnOpenServicesMenuButtonClicked()
+    {
+        ShowMenu = !ShowMenu;   
+    }
 }
