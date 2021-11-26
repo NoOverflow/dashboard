@@ -282,3 +282,9 @@ a, .btn-link {
     order: 2;
     flex-grow: 1;
 }
+
+#services-menu {
+    position: absolute; 
+    bottom: 37px;
+    left: 37px;
+}

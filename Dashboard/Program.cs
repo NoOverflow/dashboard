@@ -30,6 +30,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseAuthorization();
 app.UseAuthentication();
 app.UseHttpsRedirection();
 app.UseMvcWithDefaultRoute();
