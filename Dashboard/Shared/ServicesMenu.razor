@@ -1,7 +1,7 @@
 ﻿@using Dashboard.Models
 @using Dashboard.Services
 @inject SessionState State
-@inject SpotifyService Spotify
+@inject OAuthManagerService OAuthManager
 @inject NavigationManager NavManager
 
 <div class="container">
@@ -18,7 +18,7 @@
 @code {
     void OnLinkWithSpotifyClick()
     {
-        string url = Spotify.GetAuthenticationUrl(NavManager);
+        string url = OAuthManager.BuildAuthenticationUrl(ServiceType.Spotify);
 
         NavManager.NavigateTo(url);
         Console.WriteLine(url);

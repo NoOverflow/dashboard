@@ -4,6 +4,7 @@ using Dashboard.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dashboard.Migrations
 {
     [DbContext(typeof(DashboardContext))]
-    partial class DashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20211128015804_RefactorOAuthCredentials")]
+    partial class RefactorOAuthCredentials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +91,7 @@ namespace Dashboard.Migrations
 
             modelBuilder.Entity("Dashboard.Models.OAuthSession", b =>
                 {
-                    b.Property<Guid>("SessionId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -98,7 +100,6 @@ namespace Dashboard.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DashboardUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RefreshToken")
@@ -108,7 +109,7 @@ namespace Dashboard.Migrations
                     b.Property<int>("ServiceType")
                         .HasColumnType("int");
 
-                    b.HasKey("SessionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DashboardUserId");
 
@@ -254,13 +255,9 @@ namespace Dashboard.Migrations
 
             modelBuilder.Entity("Dashboard.Models.OAuthSession", b =>
                 {
-                    b.HasOne("Dashboard.Areas.Identity.Data.DashboardUser", "User")
+                    b.HasOne("Dashboard.Areas.Identity.Data.DashboardUser", null)
                         .WithMany("Sessions")
-                        .HasForeignKey("DashboardUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("DashboardUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

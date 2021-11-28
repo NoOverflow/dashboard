@@ -3,6 +3,8 @@ using Dashboard.Data;
 using Dashboard.Models;
 using Dashboard.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,14 +23,30 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TestService>();
 
-// Register OAuth dashboard services
-builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
-    provider.GetService<NavigationManager>(),
-    provider.GetService<UserManager<DashboardUser>>(),
-    provider.GetService<IHttpClientFactory>(),
-    provider.GetService<SessionState>(), 
-    new SpotifyOAuthSettings()
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthentication().AddSpotify(options =>
+{
+    options.Scope.Add("user-read-private");
+    options.Scope.Add("user-read-email");
+    options.UsePkce = true;
+    options.ClientId = "31136507629443baa7494abbc7856cd9";
+    options.ClientSecret = builder.Configuration["spotify-app-secrets"];
+    options.CallbackPath = "/spotify-callback";
+});
+
+builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerService(
+        provider.GetService<NavigationManager>(),
+        provider.GetService<IHttpClientFactory>(),
+        provider.GetService<AuthenticationStateProvider>(),
+        provider.GetService<UserManager<DashboardUser>>(),
+        provider.GetService<IUserStore<DashboardUser>>(),
+        provider.GetService<DashboardContext>()
+    )
+    .RegisterOAuth(ServiceType.Spotify, new OAuthConfiguration()
     {
+        TokenUrl = "https://accounts.spotify.com/api/token",
+        AuthorizeUrl = "https://accounts.spotify.com/authorize",
         Id = "31136507629443baa7494abbc7856cd9",
         RedirectUrl = "/spotify-service-callback",
         Secret = builder.Configuration["spotify-app-secrets"],
@@ -41,22 +59,16 @@ builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
             "streaming",
             "user-read-currently-playing"
         }
-    }
+    }));
+
+// Register OAuth dashboard services
+builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
+    provider.GetService<NavigationManager>(),
+    provider.GetService<UserManager<DashboardUser>>(),
+    provider.GetService<OAuthManagerService>(),
+    provider.GetService<SessionState>()
 ));
 
-// Setup them
-
-builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication().AddSpotify(options =>
-{
-    options.Scope.Add("user-read-private");
-    options.Scope.Add("user-read-email");
-    options.UsePkce = true;
-    options.ClientId = "31136507629443baa7494abbc7856cd9";
-    options.ClientSecret = builder.Configuration["spotify-app-secrets"];
-    options.CallbackPath = "/spotify-callback";
-});
 var app = builder.Build();
 
 

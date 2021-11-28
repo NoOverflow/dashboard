@@ -6,6 +6,7 @@
 @inject SessionState SessionState
 @inject AuthenticationStateProvider AuthStateProvider
 @inject HttpClient HttpClient
+@inject OAuthManagerService OAuthManager
 
 <div id="widget">
     <img id="song-img" width="50" height="50" src="@(CurrentTrack == null ? "" : CurrentTrack?.Item.Album.Images[1].Url)" />
@@ -23,9 +24,8 @@
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await SpotifyService.RefreshToken(authState.User);
-        await SpotifyService.LoadSavedToken(authState.User);
-        CurrentTrack = await SpotifyService.GetCurrentlyPlayingTrack();
+        await OAuthManager.RefreshToken(ServiceType.Spotify, authState.User);
+        CurrentTrack = await SpotifyService.GetCurrentlyPlayingTrack(authState.User);
         await base.OnInitializedAsync();
     }
 
@@ -33,17 +33,16 @@
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await SpotifyService.RefreshToken(authState.User);
         if (CurrentTrack == null)
             return;
         if ((bool)CurrentTrack.IsPlaying)
         {
-            await SpotifyService.Pause();
+            await SpotifyService.Pause(authState.User);
             CurrentTrack.IsPlaying = false;
         } 
         else
         {
-            await SpotifyService.PlayOrResume();
+            await SpotifyService.PlayOrResume(authState.User);
             CurrentTrack.IsPlaying = true;
         }     
         this.StateHasChanged();
