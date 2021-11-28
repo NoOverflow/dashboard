@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DashboardContextConnection");
 
-builder.Services.AddDbContext<DashboardContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContextFactory<DashboardContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DashboardContext>();
 builder.Services.AddHttpClient();
@@ -22,6 +22,7 @@ builder.Services.AddScoped<SessionState>();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TestService>();
+builder.Services.AddScoped<UpdateService>(provider => new UpdateService(TimeSpan.FromMilliseconds(1000))); // TODO: Make this a user configuration
 
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
@@ -41,7 +42,7 @@ builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerServ
         provider.GetService<AuthenticationStateProvider>(),
         provider.GetService<UserManager<DashboardUser>>(),
         provider.GetService<IUserStore<DashboardUser>>(),
-        provider.GetService<DashboardContext>()
+        provider.GetService<IDbContextFactory<DashboardContext>>()
     )
     .RegisterOAuth(ServiceType.Spotify, new OAuthConfiguration()
     {

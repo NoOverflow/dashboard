@@ -4,6 +4,7 @@ using Dashboard.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -28,7 +29,7 @@ namespace Dashboard.Services
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly UserManager<DashboardUser> _userManager;
         private readonly IUserStore<DashboardUser> _userStore;
-        private readonly DashboardContext _dbContext;
+        private readonly IDbContextFactory<DashboardContext> _dbContextFactory;
 
         private IHttpClientFactory _httpFactory;
 
@@ -41,7 +42,7 @@ namespace Dashboard.Services
             AuthenticationStateProvider authenticationStateProvider,
             UserManager<DashboardUser> userManager,
             IUserStore<DashboardUser> userStore,
-            DashboardContext dbContext
+            IDbContextFactory<DashboardContext> dbContextFactory
         )
         {
             this.Configurations = new Dictionary<ServiceType, OAuthConfiguration>();
@@ -51,7 +52,7 @@ namespace Dashboard.Services
             this._authStateProvider = authenticationStateProvider;
             this._userManager = userManager;
             this._userStore = userStore;
-            this._dbContext = dbContext;    
+            this._dbContextFactory = dbContextFactory;    
         }
 
         public OAuthManagerService RegisterOAuth(ServiceType type, OAuthConfiguration configuration)
@@ -99,11 +100,14 @@ namespace Dashboard.Services
             userSession.AccessToken = session.AccessToken;
             userSession.RefreshToken = session.RefreshToken;
 
-            var wgat = await _userManager.UpdateAsync(user);
-            await _userStore.UpdateAsync(user, new CancellationToken());
-            _dbContext.Update(user);
-            _dbContext.SaveChanges();
-            HttpClients[type].DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
+            using (var dbContext = _dbContextFactory.CreateDbContext())
+            {
+                await _userManager.UpdateAsync(user);
+                await _userStore.UpdateAsync(user, new CancellationToken());
+                dbContext.Update(user);
+                dbContext.SaveChanges();
+                HttpClients[type].DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
+            }
         }
 
         public async Task<OAuthSession> RefreshToken(ServiceType type, ClaimsPrincipal claims)
@@ -131,7 +135,7 @@ namespace Dashboard.Services
 
             userSession.AccessToken = session.AccessToken;
             HttpClients[type].DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
-            await UpdateOAuthSession(type, userSession, claims);
+            // await UpdateOAuthSession(type, userSession, claims);
             return session;
         }
 
@@ -149,7 +153,7 @@ namespace Dashboard.Services
 
             var formParams = new Dictionary<string, string>();
             formParams.Add("code", queryDictionary["code"]);
-            formParams.Add("redirect_uri", "https://localhost:7267" + configuration.RedirectUrl);
+            formParams.Add("redirect_uri", _navManager.ToAbsoluteUri(configuration.RedirectUrl).ToString());
             formParams.Add("grant_type", "authorization_code");
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(formParams);

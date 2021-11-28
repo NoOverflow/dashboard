@@ -34,18 +34,20 @@ namespace Dashboard.Services
 
         public async Task<CurrentlyPlayingTrack> GetCurrentlyPlayingTrack(ClaimsPrincipal claims)
         {
+            await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
+
             var response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me/player/currently-playing");
             var strRes = await response.Content.ReadAsStringAsync();
             CurrentlyPlayingTrack track = JsonConvert.DeserializeObject<CurrentlyPlayingTrack>(strRes);
 
-            await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
             return track == null ? null : (track.Item == null ? null : track);
         }
 
-        public async Task<UserProfile> GetUserProfile()
+        public async Task<UserProfile> GetUserProfile(ClaimsPrincipal claims)
         {
             try
             {
+                await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
                 HttpResponseMessage response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me");
                 string raw = await response.Content.ReadAsStringAsync();
                 UserProfile userProfile = JsonConvert.DeserializeObject<UserProfile>(raw);
@@ -58,16 +60,31 @@ namespace Dashboard.Services
             }
         }
 
+        public async Task<bool> IsConnected(ClaimsPrincipal claims)
+        {
+            try
+            {
+                await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
+                UserProfile userProfile = await GetUserProfile(claims);
+
+                return userProfile != null && userProfile.Email != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task Pause(ClaimsPrincipal claims)
         {
-            await ApiHttpClient.PutAsync("https://api.spotify.com/v1/me/player/pause", null);
             await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
+            await ApiHttpClient.PutAsync("https://api.spotify.com/v1/me/player/pause", null);
         }
 
         public async Task PlayOrResume(ClaimsPrincipal claims)
         {
-            await ApiHttpClient.PutAsync("https://api.spotify.com/v1/me/player/play", null);
             await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
+            await ApiHttpClient.PutAsync("https://api.spotify.com/v1/me/player/play", null);
         }
     }
 }

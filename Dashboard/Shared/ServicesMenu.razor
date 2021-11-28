@@ -25,8 +25,7 @@
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await OAuthManager.RefreshToken(ServiceType.Spotify, authState.User);
-        SpotifyUserProfile = await SpotifyService.GetUserProfile();
+        SpotifyUserProfile = await SpotifyService.GetUserProfile(authState.User);
         await base.OnInitializedAsync();
     }
 

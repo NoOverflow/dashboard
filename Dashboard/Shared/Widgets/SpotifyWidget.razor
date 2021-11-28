@@ -7,6 +7,7 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject HttpClient HttpClient
 @inject OAuthManagerService OAuthManager
+@inject UpdateService UpdateService
 
 <div id="widget">
     <img id="song-img" width="50" height="50" src="@(CurrentTrack == null ? "" : CurrentTrack?.Item.Album.Images[1].Url)" />
@@ -14,22 +15,44 @@
         <h1 id="song-name">@(CurrentTrack == null ? "No track" : CurrentTrack?.Item?.Name)</h1>
         <p id="artist-name">@(CurrentTrack == null ? "No artist" : CurrentTrack?.Item?.Artists[0].Name)</p>
     </div>
-    <img @onclick="OnPlayPauseButtonClick" id="pause-btn" src="@(CurrentTrack == null ? "res/play.svg" : ((bool)(CurrentTrack.IsPlaying) ? "res/pause.svg" : "res/play.svg"))" width="20px" height="28px"/>
+    <img @onclick="@(async () => await OnPlayPauseButtonClick())" id="pause-btn" src="@(CurrentTrack == null ? "res/play.svg" : ((bool)(CurrentTrack.IsPlaying) ? "res/pause.svg" : "res/play.svg"))" width="20px" height="28px"/>
 </div>
 
 @code {
     private CurrentlyPlayingTrack? CurrentTrack { get; set; } = null;
 
-    protected override async Task OnInitializedAsync()
+    private static bool IsRefreshing = false;
+
+    private async Task PopulateTrack()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await OAuthManager.RefreshToken(ServiceType.Spotify, authState.User);
         CurrentTrack = await SpotifyService.GetCurrentlyPlayingTrack(authState.User);
+    }
+
+    private async void OnRefreshTriggered()
+    {
+        if (!IsRefreshing)
+            await this.InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (IsRefreshing)
+            return;
+        IsRefreshing = true;
+        await PopulateTrack();
+        await base.OnAfterRenderAsync(firstRender);
+        IsRefreshing = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        UpdateService.OnUpdateWidget += OnRefreshTriggered;
         await base.OnInitializedAsync();
     }
 
-    async void OnPlayPauseButtonClick()
+    private async Task OnPlayPauseButtonClick()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
