@@ -23,3 +23,19 @@
         flex: none;
         flex-grow: 1;
     }
+
+#bottom-widgets {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding: 0px;
+    position: static;
+    width: 100%;
+    height: 259.17px;
+    left: 0px;
+    gap: 45.61px;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}

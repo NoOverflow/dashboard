@@ -20,9 +20,9 @@
 
 <div id="widgets">
     <WidgetsContainer StyleId="top-widgets">
-        <WidgetContainer Id="0" Widget="@(new Dashboard.Models.Widget(typeof(SpotifyWidget).AssemblyQualifiedName!))" />
-        <WidgetContainer Id="1" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
-        <WidgetContainer Id="2" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="0" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(SpotifyWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="1" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="2" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
     </WidgetsContainer>
 
     <div id="middle-widgets">
@@ -36,17 +36,13 @@
 
         </div>
     </div>
-    <div id="bottom-widgets">
-        <div id="bottom-one" class="widget-card">
 
-        </div>
-        <div id="bottom-two" class="widget-card">
+    <WidgetsContainer StyleId="bottom-widgets">
+        <WidgetContainer Id="0" Style="bottom-one" Widget="@(new Dashboard.Models.Widget(typeof(NewsWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="1" Style="bottom-two" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="2" Style="bottom-three" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+    </WidgetsContainer>
 
-        </div>
-        <div id="bottom-three" class="widget-card">
-
-        </div>
-    </div>
 </div>
 
 @if (ShowMenu)

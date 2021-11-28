@@ -2,7 +2,7 @@
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets
 
-<div class="card draggable" style="order: @Id;" draggable="true" id="content" 
+<div class="card draggable @Style" style="order: @Id;" draggable="true" id="content" 
     ondragover="event.preventDefault();" 
     @ondragstart="@OnDragStart" @ondrop="@OnDragDrop">
     <DynamicComponent Type="@(Type.GetType(Widget.SubRendererTypeName))" />
@@ -17,6 +17,9 @@
 
     [Parameter]
     public int Id { get; set; } = 0;
+
+    [Parameter]
+    public string Style { get; set; } = "";
 
     private Guid WidgetId;
 

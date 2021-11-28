@@ -1,0 +1,38 @@
+﻿@using Dashboard.Services
+@using Dashboard.Services.Widget
+@inject NYTimesService NYTimesService
+@inject UpdateService UpdateService
+<div>
+    <a href="@(Content == null ? "/dashboard" : Content.Results[CurrentNewsIndex].Url)">
+        @(Content == null ? "Loading news" : Content.Results[CurrentNewsIndex].Title)
+    </a>
+    <p>@(Content == null ? "" : Content.Results[CurrentNewsIndex].Abstract)</p>
+</div>
+
+
+@code {
+    private int CurrentNewsIndex = 0;
+    private Models.NYTimes.Content? Content = null;
+
+    private async void OnRefreshTriggered()
+    {
+        if (Content == null)
+            return;
+        /* if (++CurrentNewsIndex >= Content.Results.Length)
+            CurrentNewsIndex = 0;
+        await this.InvokeAsync(StateHasChanged);*/
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Make this a setting
+        Content = await NYTimesService.GetLiveContentAsync("all", "all");
+        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        await base.OnInitializedAsync();
+    }
+}

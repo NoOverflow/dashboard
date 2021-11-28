@@ -32,27 +32,31 @@ namespace Dashboard.Services
             this._oauthManagerService = oAuthManagerService;
         }
 
-        public async Task<CurrentlyPlayingTrack> GetCurrentlyPlayingTrack(ClaimsPrincipal claims)
+        public async Task<CurrentlyPlayingTrack?> GetCurrentlyPlayingTrack(ClaimsPrincipal claims)
         {
             await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
-
             var response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me/player/currently-playing");
+
+            if (!response.IsSuccessStatusCode)
+                return null;
             var strRes = await response.Content.ReadAsStringAsync();
-            CurrentlyPlayingTrack track = JsonConvert.DeserializeObject<CurrentlyPlayingTrack>(strRes);
+            CurrentlyPlayingTrack? track = JsonConvert.DeserializeObject<CurrentlyPlayingTrack>(strRes);
 
             return track == null ? null : (track.Item == null ? null : track);
         }
 
-        public async Task<UserProfile> GetUserProfile(ClaimsPrincipal claims)
+        public async Task<UserProfile?> GetUserProfile(ClaimsPrincipal claims)
         {
             try
             {
                 await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
                 HttpResponseMessage response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me");
-                string raw = await response.Content.ReadAsStringAsync();
-                UserProfile userProfile = JsonConvert.DeserializeObject<UserProfile>(raw);
 
-                return userProfile;
+                if (!response.IsSuccessStatusCode)
+                    return null;
+                string raw = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<UserProfile>(raw);
             }
             catch (Exception)
             {
@@ -65,7 +69,7 @@ namespace Dashboard.Services
             try
             {
                 await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
-                UserProfile userProfile = await GetUserProfile(claims);
+                UserProfile? userProfile = await GetUserProfile(claims);
 
                 return userProfile != null && userProfile.Email != null;
             }

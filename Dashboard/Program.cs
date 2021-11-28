@@ -2,6 +2,7 @@ using Dashboard.Areas.Identity.Data;
 using Dashboard.Data;
 using Dashboard.Models;
 using Dashboard.Services;
+using Dashboard.Services.Widget;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
@@ -63,6 +64,12 @@ builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerServ
     }));
 
 // Register OAuth dashboard services
+builder.Services.AddScoped<NYTimesService>(provider => new NYTimesService(
+    provider.GetService<IHttpClientFactory>(),
+    "https://api.nytimes.com/svc/news/v3",
+    builder.Configuration["nytimes-api-key"]
+));
+
 builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
     provider.GetService<NavigationManager>(),
     provider.GetService<UserManager<DashboardUser>>(),
