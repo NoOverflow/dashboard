@@ -54,13 +54,10 @@
     <ServicesMenu />
 }
 
-<button id="services-menu" @onclick="@OnOpenServicesMenuButtonClicked">
-    ^
-</button>
+<img id="services-menu" @onclick="@OnOpenServicesMenuButtonClicked" src="res/three_dots.svg" width="7" height="29" />
 
 @code {
     bool ShowMenu = false;
-
     
     void OnOpenServicesMenuButtonClicked()
     {
