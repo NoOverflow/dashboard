@@ -4,6 +4,7 @@ using Dashboard.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dashboard.Migrations
 {
     [DbContext(typeof(DashboardContext))]
-    partial class DashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20211127171511_WorkPlsSSd")]
+    partial class WorkPlsSSd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,14 +69,6 @@ namespace Dashboard.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SpotifyAccessToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SpotifyRefreshToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -107,6 +101,9 @@ namespace Dashboard.Migrations
                     b.Property<string>("DashboardUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DashboardUserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("RefreshToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,6 +111,8 @@ namespace Dashboard.Migrations
                     b.HasKey("ServiceType");
 
                     b.HasIndex("DashboardUserId");
+
+                    b.HasIndex("DashboardUserId1");
 
                     b.ToTable("OAuthSession");
                 });
@@ -260,6 +259,10 @@ namespace Dashboard.Migrations
                     b.HasOne("Dashboard.Areas.Identity.Data.DashboardUser", null)
                         .WithMany("AuthSessions")
                         .HasForeignKey("DashboardUserId");
+
+                    b.HasOne("Dashboard.Areas.Identity.Data.DashboardUser", null)
+                        .WithMany("AuthSessionsList")
+                        .HasForeignKey("DashboardUserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -316,6 +319,8 @@ namespace Dashboard.Migrations
             modelBuilder.Entity("Dashboard.Areas.Identity.Data.DashboardUser", b =>
                 {
                     b.Navigation("AuthSessions");
+
+                    b.Navigation("AuthSessionsList");
                 });
 #pragma warning restore 612, 618
         }

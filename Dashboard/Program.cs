@@ -1,5 +1,6 @@
 using Dashboard.Areas.Identity.Data;
 using Dashboard.Data;
+using Dashboard.Models;
 using Dashboard.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,11 +13,39 @@ var connectionString = builder.Configuration.GetConnectionString("DashboardConte
 builder.Services.AddDbContext<DashboardContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DashboardContext>();
+builder.Services.AddHttpClient();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<SessionState>();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TestService>();
+
+// Register OAuth dashboard services
+builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
+    provider.GetService<NavigationManager>(),
+    provider.GetService<UserManager<DashboardUser>>(),
+    provider.GetService<IHttpClientFactory>(),
+    provider.GetService<SessionState>(), 
+    new SpotifyOAuthSettings()
+    {
+        Id = "31136507629443baa7494abbc7856cd9",
+        RedirectUrl = "/spotify-service-callback",
+        Secret = builder.Configuration["spotify-app-secrets"],
+        Scopes = new[]
+        {
+            "user-read-private",
+            "user-read-email",
+            "user-modify-playback-state",
+            "user-read-playback-state",
+            "streaming",
+            "user-read-currently-playing"
+        }
+    }
+));
+
+// Setup them
+
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddAuthentication().AddSpotify(options =>

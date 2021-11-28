@@ -1,5 +1,10 @@
 ﻿@page "/dashboard"
+@using Dashboard.Models
+@using Dashboard.Services
 @using Dashboard.Shared.Widgets;
+@inject SpotifyService Spotify
+@inject SessionState SessionState
+@inject AuthenticationStateProvider AuthStateProvider
 
 <PageTitle>Panel</PageTitle>
 <img id="logo" src="res/logo.svg" />
@@ -15,7 +20,7 @@
 
 <div id="widgets">
     <WidgetsContainer StyleId="top-widgets">
-        <WidgetContainer Id="0" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
+        <WidgetContainer Id="0" Widget="@(new Dashboard.Models.Widget(typeof(SpotifyWidget).AssemblyQualifiedName!))" />
         <WidgetContainer Id="1" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
         <WidgetContainer Id="2" Widget="@(new Dashboard.Models.Widget(typeof(ExampleWidget).AssemblyQualifiedName!))" />
     </WidgetsContainer>
@@ -56,6 +61,7 @@
 @code {
     bool ShowMenu = false;
 
+    
     void OnOpenServicesMenuButtonClicked()
     {
         ShowMenu = !ShowMenu;   

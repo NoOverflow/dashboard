@@ -1,8 +1,14 @@
-﻿<div class="container">
+﻿@using Dashboard.Models
+@using Dashboard.Services
+@inject SessionState State
+@inject SpotifyService Spotify
+@inject NavigationManager NavManager
+
+<div class="container">
     <ul>
         <li>
             <img width="33" height="33" src="res/spotify_logo.svg"/>
-            <a href=".">
+            <a @onclick="OnLinkWithSpotifyClick" href=".">
                 Link with Spotify
             </a>
         </li>
@@ -10,5 +16,11 @@
 </div>
 
 @code {
+    void OnLinkWithSpotifyClick()
+    {
+        string url = Spotify.GetAuthenticationUrl(NavManager);
 
+        NavManager.NavigateTo(url);
+        Console.WriteLine(url);
+    }
 }

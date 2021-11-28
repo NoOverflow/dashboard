@@ -1,0 +1,42 @@
+﻿#widget {
+    display: inline-flex;
+}
+
+#song-img {
+    margin: 20px;
+}
+
+#song-data {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+    #song-data > p {
+        font-style: normal;
+        font-weight: 300;
+        font-size: 14.5133px;
+        line-height: 17px;
+        color: #9C9C9C;
+        margin: 0px;
+        overflow: hidden;
+        height: 17px;
+    }
+
+    #song-data > h1 {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20.7333px;
+        line-height: 24px;
+        color: #FFFFFF;
+        margin: 0px;
+        overflow: hidden;
+        height: 24px;
+    }
+
+#pause-btn {
+    position: absolute;
+    margin: auto;
+    right: 20px;
+    top: 0px;
+    bottom: 0px;
+}

@@ -1,0 +1,51 @@
+﻿@using Dashboard.Models.Spotify
+@using Dashboard.Models
+@using Dashboard.Services
+@using Dashboard.Shared.Widgets;
+@inject SpotifyService SpotifyService
+@inject SessionState SessionState
+@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient HttpClient
+
+<div id="widget">
+    <img id="song-img" width="50" height="50" src="@(CurrentTrack == null ? "" : CurrentTrack?.Item.Album.Images[1].Url)" />
+    <div id="song-data">
+        <h1 id="song-name">@(CurrentTrack == null ? "No track" : CurrentTrack?.Item?.Name)</h1>
+        <p id="artist-name">@(CurrentTrack == null ? "No artist" : CurrentTrack?.Item?.Artists[0].Name)</p>
+    </div>
+    <img @onclick="OnPlayPauseButtonClick" id="pause-btn" src="@(CurrentTrack == null ? "res/play.svg" : ((bool)(CurrentTrack.IsPlaying) ? "res/pause.svg" : "res/play.svg"))" width="20px" height="28px"/>
+</div>
+
+@code {
+    private CurrentlyPlayingTrack? CurrentTrack { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await SpotifyService.RefreshToken(authState.User);
+        await SpotifyService.LoadSavedToken(authState.User);
+        CurrentTrack = await SpotifyService.GetCurrentlyPlayingTrack();
+        await base.OnInitializedAsync();
+    }
+
+    async void OnPlayPauseButtonClick()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await SpotifyService.RefreshToken(authState.User);
+        if (CurrentTrack == null)
+            return;
+        if ((bool)CurrentTrack.IsPlaying)
+        {
+            await SpotifyService.Pause();
+            CurrentTrack.IsPlaying = false;
+        } 
+        else
+        {
+            await SpotifyService.PlayOrResume();
+            CurrentTrack.IsPlaying = true;
+        }     
+        this.StateHasChanged();
+    }
+}
