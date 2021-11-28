@@ -1,21 +1,35 @@
 ﻿@using Dashboard.Models
+@using Dashboard.Models.Spotify
 @using Dashboard.Services
 @inject SessionState State
 @inject OAuthManagerService OAuthManager
 @inject NavigationManager NavManager
+@inject SpotifyService SpotifyService
+@inject AuthenticationStateProvider AuthStateProvider
 
 <div class="container">
     <ul>
         <li>
             <img width="33" height="33" src="res/spotify_logo.svg"/>
             <a @onclick="OnLinkWithSpotifyClick" href=".">
-                Link with Spotify
+                @(SpotifyUserProfile == null ? "Link with Spotify" : "Linked to " + SpotifyUserProfile.DisplayName)
             </a>
         </li>
     </ul>
 </div>
 
 @code {
+    private UserProfile? SpotifyUserProfile { get; set; } = null;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await OAuthManager.RefreshToken(ServiceType.Spotify, authState.User);
+        SpotifyUserProfile = await SpotifyService.GetUserProfile();
+        await base.OnInitializedAsync();
+    }
+
     void OnLinkWithSpotifyClick()
     {
         string url = OAuthManager.BuildAuthenticationUrl(ServiceType.Spotify);

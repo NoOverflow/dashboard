@@ -42,6 +42,22 @@ namespace Dashboard.Services
             return track == null ? null : (track.Item == null ? null : track);
         }
 
+        public async Task<UserProfile> GetUserProfile()
+        {
+            try
+            {
+                HttpResponseMessage response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me");
+                string raw = await response.Content.ReadAsStringAsync();
+                UserProfile userProfile = JsonConvert.DeserializeObject<UserProfile>(raw);
+
+                return userProfile;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task Pause(ClaimsPrincipal claims)
         {
             await ApiHttpClient.PutAsync("https://api.spotify.com/v1/me/player/pause", null);
