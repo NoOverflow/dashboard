@@ -1,0 +1,38 @@
+﻿@using Dashboard.Models.WeatherApi
+@using Dashboard.Services
+@using Dashboard.Services.Widget
+@inject WeatherService WeatherService
+@inject UpdateService UpdateService
+
+<div>
+    <h2>@(Weather == null ? "" : 
+        Weather.Location.Name + ", " + Weather.Location.Country)</h2> 
+    <h1>@(Weather == null ? "" : Weather.Current.TempC + "°c")</h1>
+    <p>@(Weather == null ? "" : Weather.Current.Condition.Text)</p>
+</div>
+
+@code {
+    private Weather? Weather {  get;  set; }
+
+    private async void OnRefreshTriggered()
+    {
+        if (Weather == null)
+            return;
+        /* if (++CurrentNewsIndex >= Content.Results.Length)
+            CurrentNewsIndex = 0;
+        await this.InvokeAsync(StateHasChanged);*/
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Make this a setting
+        Weather = await WeatherService.GetWeatherAsync("Toulouse");
+        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        await base.OnInitializedAsync();
+    }
+}

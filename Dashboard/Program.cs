@@ -64,6 +64,12 @@ builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerServ
     }));
 
 // Register OAuth dashboard services
+builder.Services.AddScoped<WeatherService>(provider => new WeatherService(
+    provider.GetService<IHttpClientFactory>(),
+    "https://api.weatherapi.com",
+    builder.Configuration["weather-api-key"]
+));
+
 builder.Services.AddScoped<NYTimesService>(provider => new NYTimesService(
     provider.GetService<IHttpClientFactory>(),
     "https://api.nytimes.com/svc/news/v3",

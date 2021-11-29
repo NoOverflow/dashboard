@@ -20,6 +20,38 @@ p {
     color: white;
 }
 
+.middle-one {
+    position: static;
+    height: 100%;
+    width: 31%;
+    top: 0px;
+    /* Inside Auto Layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.middle-two {
+    position: static;
+    height: 100%;
+    width: 41%;
+    top: 0px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.middle-three {
+    position: static;
+    height: 100%;
+    width: 259.17px;
+    top: 0px;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}
+
 .bottom-one {
     position: static;
     height: 100%;

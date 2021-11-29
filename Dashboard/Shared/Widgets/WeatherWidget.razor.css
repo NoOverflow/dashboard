@@ -1,0 +1,33 @@
+﻿h2 {
+    overflow: hidden;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 49.76px;
+    line-height: 58px;
+    color: #C6C6C6;
+    margin-top: 21px;
+    margin-left: 50px;
+}
+
+h1 {
+    overflow: hidden;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 74.64px;
+    line-height: 87px;
+    color: #FFFFFF;
+
+    margin-top: 32px;
+    margin-left: 50px;
+    margin-bottom: 0px;
+}
+
+p {
+    overflow: hidden;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 26.9533px;
+    line-height: 32px;
+    color: #BFBFBF;
+    margin-left: 50px;
+}
