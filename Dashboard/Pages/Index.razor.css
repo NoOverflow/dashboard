@@ -1,0 +1,44 @@
+﻿#logo {
+    width: 62px;
+    height: 62px;
+    margin-left: 62px;
+    margin-top: 62px;
+}
+
+#logo-text {
+    position: absolute;
+    left: -48px;
+    float: left;
+    top: 290px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    letter-spacing: 0.215em;
+    color: #FFFFFF;
+    transform: rotate( 90deg);
+}
+
+h2 {
+    position: absolute;
+    width: 804px;
+    height: 0px;
+    left: 263px;
+    top: 245px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 48px;
+    color: #FFFFFF;
+}
+
+p {
+    position: absolute;
+    left: 17.06%;
+    right: 31.77%;
+    top: 42.12%;
+    bottom: 24.22%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 48px;
+    color: #707070;
+}
