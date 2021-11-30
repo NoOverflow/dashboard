@@ -1,6 +1,7 @@
 using Dashboard.Areas.Identity.Data;
 using Dashboard.Data;
 using Dashboard.Models;
+using Dashboard.Models.Widgets;
 using Dashboard.Services;
 using Dashboard.Services.Widget;
 using Microsoft.AspNetCore.Components;
@@ -89,6 +90,14 @@ builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
     provider.GetService<OAuthManagerService>(),
     provider.GetService<SessionState>()
 ));
+
+// Register widgets
+builder.Services.AddSingleton<WidgetFactoryService>(provider =>
+    new WidgetFactoryService()
+        .RegisterWidgetType<NewsWidgetModel>()
+        .RegisterWidgetType<SpotifyWidgetModel>()
+        .RegisterWidgetType<WeatherWidgetModel>()
+);
 
 var app = builder.Build();
 

@@ -82,7 +82,8 @@ a, .btn-link {
     margin-left: 20px;
     max-width: 100%;
     height: 50px;
-    width: auto; /* ie8 */
+    width: auto;
+    float: left;
 }
 
 #e1 {
@@ -144,10 +145,8 @@ a, .btn-link {
 
 #widgets {
     position: sticky;
-    top: 12.754%;
     left: 21.864%;
     right: 21.863%;
-    bottom: 12.754%;
     margin-left: 15.79%;
     margin-right: 15.79%;
     display: flex;
@@ -156,6 +155,7 @@ a, .btn-link {
     padding: 0px;
     gap: 41.47px;
     height: 100%;
+    justify-content: center;
 }
 
 .widget-card {

@@ -34,15 +34,22 @@ namespace Dashboard.Services
 
         public async Task<CurrentlyPlayingTrack?> GetCurrentlyPlayingTrack(ClaimsPrincipal claims)
         {
-            await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
-            var response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me/player/currently-playing");
+            try
+            {
+                await _oauthManagerService.RefreshToken(ServiceType.Spotify, claims);
+                var response = await ApiHttpClient.GetAsync("https://api.spotify.com/v1/me/player/currently-playing");
 
-            if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
+                    return null;
+                var strRes = await response.Content.ReadAsStringAsync();
+                CurrentlyPlayingTrack? track = JsonConvert.DeserializeObject<CurrentlyPlayingTrack>(strRes);
+
+                return track == null ? null : (track.Item == null ? null : track);
+            }
+            catch (Exception)
+            {
                 return null;
-            var strRes = await response.Content.ReadAsStringAsync();
-            CurrentlyPlayingTrack? track = JsonConvert.DeserializeObject<CurrentlyPlayingTrack>(strRes);
-
-            return track == null ? null : (track.Item == null ? null : track);
+            }
         }
 
         public async Task<UserProfile?> GetUserProfile(ClaimsPrincipal claims)

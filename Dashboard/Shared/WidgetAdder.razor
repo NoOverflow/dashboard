@@ -1,0 +1,43 @@
+﻿@using Dashboard.Models
+@using Dashboard.Services
+@inject WidgetFactoryService WidgetFactory
+
+<div id="container">
+    <div id="subcontainer">
+        <ul>
+            @foreach (var widget in Widgets)
+            {
+                <li>
+                    <div @onclick="@(() => OnAddWidgetClick(widget))">
+                        <h1>@(widget.FriendlyName)</h1>
+                        <p>@(widget.Description)</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Action<WidgetModel, int>? OnAddWidget { get; set; }
+
+    [Parameter]
+    public int Index { get; set; }
+
+    private List<WidgetModel> Widgets { get; set; } = new List<WidgetModel>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        foreach (Type widgetType in WidgetFactory.WidgetsTypesList)
+        {
+            Widgets.Add((WidgetModel)(Activator.CreateInstance(widgetType)!));
+        }
+    }
+
+    private void OnAddWidgetClick(WidgetModel widget)
+    {
+        OnAddWidget?.Invoke(widget, Index);
+    }
+}

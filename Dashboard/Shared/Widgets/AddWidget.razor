@@ -1,7 +1,20 @@
-﻿<div>
-    <img src="res/plus.svg" width="29" height="29" />
+﻿<div @onclick="OnContainerClick"  id="container">
+    @if (ShowMenu)
+    {
+        <WidgetAdder ></WidgetAdder>
+    } 
+    else
+    {
+        <img id="plus-image" src="res/plus.svg" width="29" height="29" />
+    }
+    
 </div>
 
 @code {
-
+    private bool ShowMenu { get; set; } = false;
+    
+    private void OnContainerClick()
+    {
+        
+    }
 }

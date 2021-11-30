@@ -1,5 +1,6 @@
 ﻿@page "/dashboard"
 @using Dashboard.Models
+@using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets;
 @inject SpotifyService Spotify
@@ -21,31 +22,36 @@
             <img id="e7" draggable="false" src="res/ellipses/e7.svg" />
         </div>
 
-        <div id="widgets">
-            <WidgetsContainer StyleId="top-widgets">
-                <WidgetContainer Id="0" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="1" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="2" Style="top" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-            </WidgetsContainer>
+        @if (ShowWidgetAdderMenu)
+        {
+            <WidgetAdder Index="@WidgetAdderIndex" OnAddWidget="OnAddWidget" />
+        } 
+        else
+        {
+            <div id="widgets">
+                <WidgetsContainer StyleId="top-widgets">
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="0" Style="top" Widget="@(Widgets[0])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="1" Style="top" Widget="@(Widgets[1])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="2" Style="top" Widget="@(Widgets[2])" />
+                </WidgetsContainer>
 
-            <WidgetsContainer StyleId="middle-widgets">
-                <WidgetContainer Id="0" Style="middle-one" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="1" Style="middle-two" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="2" Style="middle-three" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-            </WidgetsContainer>
+                <WidgetsContainer StyleId="middle-widgets">
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="3" Style="middle-one" Widget="@(Widgets[3])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="4" Style="middle-two" Widget="@(Widgets[4])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="5" Style="middle-three" Widget="@(Widgets[5])" />
+                </WidgetsContainer>
 
-            <WidgetsContainer StyleId="bottom-widgets">
-                <WidgetContainer Id="0" Style="bottom-one" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="1" Style="bottom-two" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-                <WidgetContainer Id="2" Style="bottom-three" Widget="@(new Dashboard.Models.Widget(typeof(AddWidget).AssemblyQualifiedName!))" />
-            </WidgetsContainer>
-        </div>
-
-        @if (ShowMenu)
+                <WidgetsContainer StyleId="bottom-widgets">
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="6" Style="bottom-one" Widget="@(Widgets[6])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="7" Style="bottom-two" Widget="@(Widgets[7])" />
+                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="8" Style="bottom-three" Widget="@(Widgets[8])" />
+                </WidgetsContainer>
+            </div>
+        }
+        @if (ShowServicesMenu)
         {
             <ServicesMenu />
         }
-
         <img id="services-menu" @onclick="@OnOpenServicesMenuButtonClicked" src="res/three_dots.svg" width="7" height="29" />
     </Authorized>
     <NotAuthorized>
@@ -54,10 +60,37 @@
 </AuthorizeView>
 
 @code {
-    bool ShowMenu = false;
-    
+    public WidgetModel?[] Widgets = new WidgetModel?[9];
+
+    bool ShowServicesMenu = false;
+    bool ShowWidgetAdderMenu = false;
+
+    private int WidgetAdderIndex = 0; 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        for (int i = 0; i < Widgets.Length; i++)
+            Widgets[i] = null;
+    }
+
     void OnOpenServicesMenuButtonClicked()
     {
-        ShowMenu = !ShowMenu;   
+        ShowServicesMenu = !ShowServicesMenu;   
+    }
+
+    void OnWidgetAdderOpen(int requestingWidgetIndex)
+    {
+        WidgetAdderIndex = requestingWidgetIndex;
+        ShowWidgetAdderMenu = true;
+        StateHasChanged();
+    }
+
+    void OnAddWidget(WidgetModel widget, int index)
+    {
+        Widgets[index] = widget;
+        ShowWidgetAdderMenu = false;
+        Console.WriteLine("OnAddWidget()");
+        StateHasChanged();
     }
 }

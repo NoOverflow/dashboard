@@ -1,27 +1,37 @@
 ﻿@using Dashboard.Models;
+@using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets
 
-<div class="card draggable @Style" style="order: @Id;" draggable="true" id="content" 
+<div class="card draggable @Style" style="order: @OrderId;" draggable="true" id="content" 
     ondragover="event.preventDefault();" 
-    @ondragstart="@OnDragStart" @ondrop="@OnDragDrop">
-    <DynamicComponent Type="@(Type.GetType(Widget.SubRendererTypeName))" />
-</div>
+    @ondragstart="@OnDragStart" @ondrop="@OnDragDrop" @onclick="@OnClick">
+    <DynamicComponent Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
+</div> 
+
+
 
 @code {
     [CascadingParameter]
     public WidgetsContainer Container { get; set; } = null;
 
     [Parameter]
-    public Widget Widget { get; set; }
+    public WidgetModel? Widget { get; set; }
 
     [Parameter]
-    public int Id { get; set; } = 0;
+    public int OrderId { get; set; } = 0;
+
+    [Parameter]
+    public int WidgetIndex { get; set; } = 0;
 
     [Parameter]
     public string Style { get; set; } = "";
 
+    [Parameter]
+    public Action<int>? OnWidgetAdderOpen { get; set; } = null;
+
     private Guid WidgetId;
+    private bool ShowMenu = false;
 
     protected override void OnInitialized()
     {
@@ -39,14 +49,21 @@
 
     void OnDragDrop(DragEventArgs e)
     {
-        int holder = this.Id;
+        int holder = this.OrderId;
 
         if (Container != null && Container.DraggedWidget != null) 
         {
-            this.Id = Container.DraggedWidget.Id;
-            Container.DraggedWidget.Id = holder;
+            this.OrderId = Container.DraggedWidget.OrderId;
+            Container.DraggedWidget.OrderId = holder;
             Container.DraggedWidget.StateHasChanged();
             Container.DraggedWidget = null;
         }
+    }
+
+    void OnClick()
+    {
+        if (Widget != null)
+            return;
+        OnWidgetAdderOpen?.Invoke(WidgetIndex);
     }
 }
