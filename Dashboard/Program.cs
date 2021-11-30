@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,11 @@ builder.Services.AddDbContextFactory<DashboardContext>(options => options.UseSql
 builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DashboardContext>();
 builder.Services.AddHttpClient();
+builder.Services
+    .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+    .AddScoped<IUrlHelper>(x => x
+        .GetRequiredService<IUrlHelperFactory>()
+        .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<SessionState>();
@@ -38,7 +46,6 @@ builder.Services.AddAuthentication().AddSpotify(options =>
 });
 
 builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerService(
-        provider.GetService<NavigationManager>(),
         provider.GetService<IHttpClientFactory>(),
         provider.GetService<AuthenticationStateProvider>(),
         provider.GetService<UserManager<DashboardUser>>(),

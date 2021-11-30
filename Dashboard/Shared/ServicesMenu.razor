@@ -31,7 +31,8 @@
 
     void OnLinkWithSpotifyClick()
     {
-        string url = OAuthManager.BuildAuthenticationUrl(ServiceType.Spotify);
+        string baseUriWithoutSlash = NavManager.BaseUri.Remove(NavManager.BaseUri.LastIndexOf("/"));
+        string url = OAuthManager.BuildAuthenticationUrl(ServiceType.Spotify, baseUriWithoutSlash);
 
         NavManager.NavigateTo(url);
         Console.WriteLine(url);

@@ -1,7 +1,10 @@
 ﻿@page "/"
 @namespace Dashboard.Pages
+@using Microsoft.AspNetCore.Components
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@inject NavigationManager NavManager
+
 @{
     Layout = "_Layout";
 }

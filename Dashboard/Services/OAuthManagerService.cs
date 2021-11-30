@@ -4,10 +4,13 @@ using Dashboard.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Policy;
 
 namespace Dashboard.Services
 {
@@ -25,7 +28,6 @@ namespace Dashboard.Services
 
     public class OAuthManagerService
     {
-        private readonly NavigationManager _navManager;
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly UserManager<DashboardUser> _userManager;
         private readonly IUserStore<DashboardUser> _userStore;
@@ -37,7 +39,6 @@ namespace Dashboard.Services
         private Dictionary<ServiceType, HttpClient> HttpClients;
 
         public OAuthManagerService(
-            NavigationManager navManager,
             IHttpClientFactory factory,
             AuthenticationStateProvider authenticationStateProvider,
             UserManager<DashboardUser> userManager,
@@ -47,7 +48,6 @@ namespace Dashboard.Services
         {
             this.Configurations = new Dictionary<ServiceType, OAuthConfiguration>();
             this.HttpClients = new Dictionary<ServiceType, HttpClient>();
-            this._navManager = navManager;
             this._httpFactory = factory;
             this._authStateProvider = authenticationStateProvider;
             this._userManager = userManager;
@@ -62,7 +62,7 @@ namespace Dashboard.Services
             return this;
         }
 
-        public string BuildAuthenticationUrl(ServiceType type)
+        public string BuildAuthenticationUrl(ServiceType type, string absoluteUrl)
         {
             OAuthConfiguration configuration = Configurations[type];
             string url = configuration.AuthorizeUrl + "?";
@@ -74,7 +74,7 @@ namespace Dashboard.Services
             foreach (string scope in configuration.Scopes)
                 url += scope + " ";
             url = url.Substring(0, url.LastIndexOf(" "));
-            url += "&redirect_uri=" + _navManager.ToAbsoluteUri(configuration.RedirectUrl) + "&";
+            url += "&redirect_uri=" + absoluteUrl + configuration.RedirectUrl + "&";
             url += "state=" + state;
             return url;
         }
@@ -139,7 +139,7 @@ namespace Dashboard.Services
             return session;
         }
 
-        public async Task<OAuthSession> HandleAuthorizationCallback(ServiceType type, string queryData, ClaimsPrincipal claims)
+        public async Task<OAuthSession> HandleAuthorizationCallback(ServiceType type, string queryData, ClaimsPrincipal claims, string absoluteUrl)
         {
             OAuthConfiguration configuration = Configurations[type];
             HttpClient httpClient = HttpClients[type];
@@ -153,7 +153,7 @@ namespace Dashboard.Services
 
             var formParams = new Dictionary<string, string>();
             formParams.Add("code", queryDictionary["code"]);
-            formParams.Add("redirect_uri", _navManager.ToAbsoluteUri(configuration.RedirectUrl).ToString());
+            formParams.Add("redirect_uri", absoluteUrl + configuration.RedirectUrl);
             formParams.Add("grant_type", "authorization_code");
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(formParams);

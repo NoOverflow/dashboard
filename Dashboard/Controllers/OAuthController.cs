@@ -33,8 +33,8 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<RedirectResult> Get(string ServiceName)
         {
-            // var fuckblazor = await _oAuthenticationStateProvider.GetAuthenticationStateAsync();
-            await _oAuthManagerService.HandleAuthorizationCallback(ServicesName[ServiceName], Request.QueryString.Value, User);
+            await _oAuthManagerService.HandleAuthorizationCallback(ServicesName[ServiceName], Request.QueryString.Value, User,
+                HttpContext.Request.Scheme + "://" + HttpContext.Request.Host);
             return Redirect("/dashboard");
         }
     }

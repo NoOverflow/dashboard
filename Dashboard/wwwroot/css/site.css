@@ -10,6 +10,7 @@ body {
     margin: 0;
     background-color: #03080E;
     padding: 0;
+    overflow: hidden;
     position: absolute;
     font-family: 'Roboto', sans-serif;
 }
