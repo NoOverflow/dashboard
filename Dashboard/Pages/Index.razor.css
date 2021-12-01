@@ -18,12 +18,14 @@
     transform: rotate( 90deg);
 }
 
-h2 {
+#central-text {
     position: absolute;
-    width: 804px;
-    height: 0px;
-    left: 263px;
+    left: 22%;
     top: 245px;
+}
+
+h2 {
+    width: 804px;
     font-style: normal;
     font-weight: normal;
     font-size: 48px;
@@ -31,14 +33,37 @@ h2 {
 }
 
 p {
-    position: absolute;
-    left: 17.06%;
-    right: 31.77%;
-    top: 42.12%;
-    bottom: 24.22%;
+    width: 870px;
+    margin-top: 75px;
+    margin-left: 27px;
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 48px;
     color: #707070;
+}
+
+nav {
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 65px;
+    margin-right: 75px;
+}
+
+#register {
+    color: #7B7B7B;
+}
+
+nav > a {
+    text-decoration: none;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 0%;
+    /* identical to box height, or 0px */
+    margin-left: 38px;
+    letter-spacing: 0.1em;
+    color: white;
 }
