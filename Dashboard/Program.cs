@@ -36,15 +36,29 @@ builder.Services.AddScoped<UpdateService>(provider => new UpdateService(TimeSpan
 
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication().AddSpotify(options =>
-{
-    options.Scope.Add("user-read-private");
-    options.Scope.Add("user-read-email");
-    options.UsePkce = true;
-    options.ClientId = "31136507629443baa7494abbc7856cd9";
-    options.ClientSecret = builder.Configuration["spotify-app-secrets"];
-    options.CallbackPath = "/spotify-callback";
-});
+builder.Services.AddAuthentication()
+    .AddSpotify(options =>
+    {
+        options.Scope.Add("user-read-private");
+        options.Scope.Add("user-read-email");
+        options.UsePkce = true;
+        options.ClientId = "31136507629443baa7494abbc7856cd9";
+        options.ClientSecret = builder.Configuration["spotify-app-secrets"];
+        options.CallbackPath = "/spotify-callback";
+    })
+    .AddMicrosoftAccount(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Microsoft:id"];
+        options.ClientSecret = builder.Configuration["Authentication:Microsoft:secret"];
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:id"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:secret"];
+    });
+
+
+   
 
 builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerService(
         provider.GetService<IHttpClientFactory>(),
