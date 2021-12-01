@@ -6,8 +6,16 @@
 <h1 id="logo-text">DASHBOARD</h1>
 
 <nav>
-    <a id="register" href="/Identity/Account/Register">Register</a>
-    <a href="/Identity/Account/Login">Login</a>
+    <AuthorizeView>
+        <Authorized>
+            <a id="register" href="/Identity/Account/Logout">Logout</a>
+            <a href="/dashboard">Dashboard</a>
+        </Authorized>
+        <NotAuthorized>
+            <a id="register" href="/Identity/Account/Register">Register</a>
+            <a href="/Identity/Account/Login">Login</a>
+        </NotAuthorized>
+    </AuthorizeView>
 </nav>
 <div id="central-text">
     <h2>Centralize your needs with Dashboard</h2>
