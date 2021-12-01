@@ -16,30 +16,26 @@ a {
     margin-top: 25px;
     font-style: normal;
     font-weight: normal;
-    font-size: 24.88px;
-    line-height: 29px;
+    font-size: 2vh;
     color: #FFFFFF;
     overflow: hidden;
     text-decoration: none;
-    margin-left: 45px;
-    margin-right: 45px;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
 
 p {
     font-style: normal;
     font-weight: normal;
-    font-size: 20.7333px;
-    line-height: 24px;
+    font-size: 1.7vh;
     display: flex;
     align-items: center;
     color: #B7B7B7;
-
     margin-top: auto;
     margin-bottom: auto;
     top: 0px;
     bottom: 0px;
-    
-    margin-left: 45px;
-    margin-right: 45px;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
 
