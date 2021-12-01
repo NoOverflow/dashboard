@@ -15,20 +15,20 @@
     font-size: 36px;
     letter-spacing: 0.215em;
     color: #FFFFFF;
-    transform: rotate( 90deg);
+    transform: rotate(90deg);
 }
 
 #central-text {
     position: absolute;
     left: 22%;
-    top: 245px;
+    top: 177px;
 }
 
 h2 {
     width: 804px;
     font-style: normal;
     font-weight: normal;
-    font-size: 48px;
+    font-size: 40px;
     color: #FFFFFF;
 }
 
@@ -39,7 +39,7 @@ p {
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
-    font-size: 48px;
+    font-size: 32px;
     color: #707070;
 }
 
@@ -60,7 +60,7 @@ nav > a {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 0%;
     /* identical to box height, or 0px */
     margin-left: 38px;
