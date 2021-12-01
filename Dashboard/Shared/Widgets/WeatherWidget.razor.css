@@ -2,23 +2,22 @@
     overflow: hidden;
     font-style: normal;
     font-weight: 300;
-    font-size: 49.76px;
+    font-size: 3vw;
     line-height: 58px;
     color: #C6C6C6;
-    margin-top: 21px;
-    margin-left: 50px;
+    margin-top: 1vw;
+    margin-bottom: 0px;
+    margin-left: 2vw;
 }
 
 h1 {
     overflow: hidden;
     font-style: normal;
     font-weight: 300;
-    font-size: 74.64px;
+    font-size:5vw;
     line-height: 87px;
     color: #FFFFFF;
-
-    margin-top: 32px;
-    margin-left: 50px;
+    margin-left: 2vw;
     margin-bottom: 0px;
 }
 
@@ -29,5 +28,5 @@ p {
     font-size: 26.9533px;
     line-height: 32px;
     color: #BFBFBF;
-    margin-left: 50px;
+    margin-left: 2vw;
 }
