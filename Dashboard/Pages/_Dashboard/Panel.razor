@@ -93,7 +93,7 @@
         await BrowserStorage.SetAsync("panel_layout", JsonConvert.SerializeObject(Widgets));
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async void OnAfterRender(bool firstRender)
     {
         if (!(await LoadWidgetPanelLayout()))
         {
@@ -101,6 +101,24 @@
                 Widgets[i] = null;
         }
         StateHasChanged();
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (!(await LoadWidgetPanelLayout()))
+            {
+                for (int i = 0; i < Widgets.Length; i++)
+                    Widgets[i] = null;
+            }
+            StateHasChanged();
+        } 
+        catch (Exception ex)
+        {
+            
+        }
         await base.OnInitializedAsync();
     }
 
