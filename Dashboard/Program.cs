@@ -18,8 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DashboardContextConnection");
 
 builder.Services.AddDbContextFactory<DashboardContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDefaultIdentity<DashboardUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<DashboardContext>();
+builder.Services
+    .AddDefaultIdentity<DashboardUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.SignIn.RequireConfirmedEmail = false;
+    })
+    .AddEntityFrameworkStores<DashboardContext>();
 builder.Services.AddHttpClient();
 builder.Services
     .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
