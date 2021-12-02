@@ -1,5 +1,6 @@
 ﻿namespace Dashboard.Models
 {
+    [Serializable]
     public class WidgetModel
     {
         /// <summary>
@@ -7,6 +8,9 @@
         /// </summary>
         public Type? SubRendererType { get; set; }
 
+        /// <summary>
+        /// The friendly name displayed to an user on the widget list
+        /// </summary>
         public string? FriendlyName { get; set; }
 
         /// <summary>

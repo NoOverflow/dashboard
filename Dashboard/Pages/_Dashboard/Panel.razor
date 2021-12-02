@@ -3,9 +3,12 @@
 @using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Newtonsoft.Json
 @inject SpotifyService Spotify
 @inject SessionState SessionState
 @inject AuthenticationStateProvider AuthStateProvider
+@inject ProtectedLocalStorage BrowserStorage
 
 <PageTitle>Panel</PageTitle>
 
@@ -70,30 +73,50 @@
 
     private int WidgetAdderIndex = 0; 
 
-    protected override void OnInitialized()
+    private async Task<bool> LoadWidgetPanelLayout()
     {
-        base.OnInitialized();
-        for (int i = 0; i < Widgets.Length; i++)
-            Widgets[i] = null;
+        var result = await BrowserStorage.GetAsync<string>("panel_layout");
+
+        if (!result.Success)
+            return false;
+        var widgets = JsonConvert.DeserializeObject<WidgetModel?[]>(result.Value!);
+        this.Widgets = widgets;
+        StateHasChanged();
+        return true;
     }
 
-    void OnOpenServicesMenuButtonClicked()
+    private async Task SaveWidgetPanelLayout()
+    {
+        await BrowserStorage.SetAsync("panel_layout", JsonConvert.SerializeObject(Widgets));
+    }
+
+    protected override async void OnInitialized()
+    {
+        if (!(await LoadWidgetPanelLayout()))
+        {
+            for (int i = 0; i < Widgets.Length; i++)
+                Widgets[i] = null;
+        }
+        base.OnInitialized();
+    }
+
+    private void OnOpenServicesMenuButtonClicked()
     {
         ShowServicesMenu = !ShowServicesMenu;   
     }
 
-    void OnWidgetAdderOpen(int requestingWidgetIndex)
+    private void OnWidgetAdderOpen(int requestingWidgetIndex)
     {
         WidgetAdderIndex = requestingWidgetIndex;
         ShowWidgetAdderMenu = true;
         StateHasChanged();
     }
 
-    void OnAddWidget(WidgetModel widget, int index)
+    private async void OnAddWidget(WidgetModel widget, int index)
     {
         Widgets[index] = widget;
         ShowWidgetAdderMenu = false;
-        Console.WriteLine("OnAddWidget()");
+        await SaveWidgetPanelLayout();
         StateHasChanged();
     }
 }
