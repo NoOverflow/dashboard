@@ -1,7 +1,10 @@
-﻿@using Dashboard.Services
+﻿@using Dashboard.Models
+@using Dashboard.Models.Widgets
+@using Dashboard.Services
 @using Dashboard.Services.Widget
 @inject NYTimesService NYTimesService
 @inject UpdateService UpdateService
+
 <div>
     <a href="@(Content == null ? "/dashboard" : Content.Results[CurrentNewsIndex].Url)">
         @(Content == null ? "Loading news" : Content.Results[CurrentNewsIndex].Title)
@@ -11,8 +14,14 @@
 
 
 @code {
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
     private int CurrentNewsIndex = 0;
     private Models.NYTimes.Content? Content = null;
+
+    [ContextStatic]
+    private bool ContentSet = false;
 
     private async void OnRefreshTriggered()
     {
@@ -23,15 +32,14 @@
         await this.InvokeAsync(StateHasChanged);*/
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        // Make this a setting
-        Content = await NYTimesService.GetLiveContentAsync("all", "all");
+        if (Widget != null && !ContentSet)
+        {
+            Content = await NYTimesService.GetLiveContentAsync((string)Widget.Settings["Source"], (string)Widget.Settings["Section"]);
+            ContentSet = true;
+        }
         UpdateService.OnUpdateWidget += OnRefreshTriggered;
         await base.OnInitializedAsync();
     }

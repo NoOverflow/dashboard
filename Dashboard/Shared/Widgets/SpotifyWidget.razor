@@ -1,5 +1,6 @@
 ﻿@using Dashboard.Models.Spotify
 @using Dashboard.Models
+@using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets;
 @inject SpotifyService SpotifyService
@@ -13,15 +14,18 @@
     <img id="song-img" width="50" height="50" src="@(CurrentTrack == null ? "" : CurrentTrack?.Item.Album.Images[1].Url)" />
     <div id="song-data">
         <h1 id="song-name">@(CurrentTrack == null ? "No track" : CurrentTrack?.Item?.Name)</h1>
-        <p id="artist-name">@(CurrentTrack == null ? "No artist" : CurrentTrack?.Item?.Artists[0].Name)</p>
+        <p id="artist-name">@(CurrentTrack == null ? "No artist" : CurrentTrack?.Item?.Artists[0].Name + ((bool)Widget.Settings["ShowAlbumName"] ? (" - " + CurrentTrack.Item.Album.Name) : ""))</p>
     </div>
     <img @onclick="@(async () => await OnPlayPauseButtonClick())" id="pause-btn" src="@(CurrentTrack == null ? "res/play.svg" : ((bool)(CurrentTrack.IsPlaying) ? "res/pause.svg" : "res/play.svg"))" width="20px" height="28px"/>
 </div>
 
 @code {
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
     private CurrentlyPlayingTrack? CurrentTrack { get; set; } = null;
 
-    private static bool IsRefreshing = false;
+    private bool IsRefreshing = false;
 
     private async Task PopulateTrack()
     {

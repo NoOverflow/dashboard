@@ -1,0 +1,13 @@
+﻿@using Dashboard.Models.Widgets
+<input type="text" @onchange="@((args) => Widget.Settings["City"] = args.Value)" />
+
+@code {
+    [Parameter]
+    public WidgetModel Widget { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Widget.Settings["City"] = "Toulouse";
+        await base.OnInitializedAsync();
+    }
+}

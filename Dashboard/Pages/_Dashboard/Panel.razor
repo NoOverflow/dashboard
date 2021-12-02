@@ -34,25 +34,28 @@
         } 
         else
         {
-            <div id="widgets">
-                <WidgetsContainer StyleId="top-widgets">
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="0" Style="top" Widget="@(Widgets[0])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="1" Style="top" Widget="@(Widgets[1])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="2" Style="top" Widget="@(Widgets[2])" />
-                </WidgetsContainer>
+            @if (Widgets != null)
+            {
+                <div id="widgets">
+                    <WidgetsContainer StyleId="top-widgets">
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="0" Style="top" Widget="@(Widgets[0])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="1" Style="top" Widget="@(Widgets[1])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="2" Style="top" Widget="@(Widgets[2])" />
+                    </WidgetsContainer>
 
-                <WidgetsContainer StyleId="middle-widgets">
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="3" Style="middle-one" Widget="@(Widgets[3])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="4" Style="middle-two" Widget="@(Widgets[4])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="5" Style="middle-three" Widget="@(Widgets[5])" />
-                </WidgetsContainer>
+                    <WidgetsContainer StyleId="middle-widgets">
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="3" Style="middle-one" Widget="@(Widgets[3])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="4" Style="middle-two" Widget="@(Widgets[4])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="5" Style="middle-three" Widget="@(Widgets[5])" />
+                    </WidgetsContainer>
 
-                <WidgetsContainer StyleId="bottom-widgets">
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="6" Style="bottom-one" Widget="@(Widgets[6])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="7" Style="bottom-two" Widget="@(Widgets[7])" />
-                    <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="8" Style="bottom-three" Widget="@(Widgets[8])" />
-                </WidgetsContainer>
-            </div>
+                    <WidgetsContainer StyleId="bottom-widgets">
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="0" WidgetIndex="6" Style="bottom-one" Widget="@(Widgets[6])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="1" WidgetIndex="7" Style="bottom-two" Widget="@(Widgets[7])" />
+                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OrderId="2" WidgetIndex="8" Style="bottom-three" Widget="@(Widgets[8])" />
+                    </WidgetsContainer>
+                </div>
+            }
         }
         @if (ShowServicesMenu)
         {
@@ -66,7 +69,7 @@
 </AuthorizeView>
 
 @code {
-    public WidgetModel?[] Widgets = new WidgetModel?[9];
+    public WidgetModel?[] Widgets = null;
 
     bool ShowServicesMenu = false;
     bool ShowWidgetAdderMenu = false;
@@ -90,14 +93,15 @@
         await BrowserStorage.SetAsync("panel_layout", JsonConvert.SerializeObject(Widgets));
     }
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (!(await LoadWidgetPanelLayout()))
         {
             for (int i = 0; i < Widgets.Length; i++)
                 Widgets[i] = null;
         }
-        base.OnInitialized();
+        StateHasChanged();
+        await base.OnInitializedAsync();
     }
 
     private void OnOpenServicesMenuButtonClicked()

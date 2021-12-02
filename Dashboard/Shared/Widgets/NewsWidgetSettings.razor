@@ -1,0 +1,38 @@
+﻿@using Dashboard.Models
+@using Dashboard.Models.NYTimes
+@using Dashboard.Models.Widgets
+@inject Dashboard.Services.Widget.NYTimesService NewsService
+
+<h3>News Source</h3>
+<select @onchange="@((args) => Widget.Settings["Source"] = args.Value)">
+    <option value="all">All</option>
+    <option value="nyt">New York Times</option>
+    <option value="inyt">International New York Times</option>
+</select>
+
+<h3>News Section</h3>
+<select @onchange="@((args) => Widget.Settings["Section"] = args.Value)">
+    <option value="all">All</option>
+    @if (@Sections != null)
+    {
+        @foreach (var item in @Sections.Results)
+        {
+            <option value="@item.Section">@item.DisplayName</option>
+        }
+    }
+</select>
+
+@code {
+    [Parameter]
+    public WidgetModel Widget { get; set; }
+
+    private Sections? Sections { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Widget.Settings["Source"] = "all";
+        Widget.Settings["Section"] = "all";
+        Sections = await NewsService.GetContentsAsync();
+        await base.OnInitializedAsync();
+    }
+}

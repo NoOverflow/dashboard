@@ -1,0 +1,13 @@
+﻿@using Dashboard.Models.Widgets
+
+<input type="checkbox" @onchange="@((args) => Widget.Settings["ShowAlbumName"] = args.Value)">Show album name</input>
+@code {
+    [Parameter]
+    public WidgetModel Widget { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Widget.Settings["ShowAlbumName"] = false;
+        await base.OnInitializedAsync();
+    }
+}

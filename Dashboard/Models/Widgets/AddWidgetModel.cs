@@ -1,4 +1,5 @@
 ﻿using Dashboard.Shared.Widgets;
+using Newtonsoft.Json;
 
 namespace Dashboard.Models.Widgets
 {
@@ -6,7 +7,6 @@ namespace Dashboard.Models.Widgets
     {
         public AddWidgetModel()
         {
-            this.FriendlyName = "Add";
             this.SubRendererType = typeof(AddWidget);
         }
     }

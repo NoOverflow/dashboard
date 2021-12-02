@@ -1,4 +1,6 @@
-﻿<div @onclick="OnContainerClick"  id="container">
+﻿@using Dashboard.Models
+@using Dashboard.Models.Widgets
+<div @onclick="OnContainerClick"  id="container">
     @if (ShowMenu)
     {
         <WidgetAdder ></WidgetAdder>
@@ -7,10 +9,12 @@
     {
         <img id="plus-image" src="res/plus.svg" width="29" height="29" />
     }
-    
 </div>
 
 @code {
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
     private bool ShowMenu { get; set; } = false;
     
     private void OnContainerClick()

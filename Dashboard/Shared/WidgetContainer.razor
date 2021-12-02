@@ -6,10 +6,8 @@
 <div class="card draggable @Style" style="order: @OrderId;" draggable="true" id="content" 
     ondragover="event.preventDefault();" 
     @ondragstart="@OnDragStart" @ondrop="@OnDragDrop" @onclick="@OnClick">
-    <DynamicComponent Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
+    <DynamicComponent Parameters="DynamicParameters" Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
 </div> 
-
-
 
 @code {
     [CascadingParameter]
@@ -32,9 +30,12 @@
 
     private Guid WidgetId;
     private bool ShowMenu = false;
+    private Dictionary<string, object> DynamicParameters = new Dictionary<string, object>();
 
     protected override void OnInitialized()
     {
+        if (Widget != null && DynamicParameters.Count == 0)
+            DynamicParameters.Add("Widget", Widget);
         WidgetId = Guid.NewGuid();
         base.OnInitialized();
     }

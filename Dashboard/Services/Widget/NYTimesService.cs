@@ -27,5 +27,14 @@ namespace Dashboard.Services.Widget
             return JsonConvert.DeserializeObject<Content>(await response.Content.ReadAsStringAsync());
         }
 
+        public async Task<Sections?> GetContentsAsync()
+        {
+            string url = _baseUrl + $"/content/section-list.json?api-key={_apiKey}";
+            HttpResponseMessage response = await HttpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+            return JsonConvert.DeserializeObject<Sections>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

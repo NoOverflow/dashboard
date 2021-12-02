@@ -1,30 +1,45 @@
 ﻿@using Dashboard.Models
+@using Dashboard.Models.Widgets
 @using Dashboard.Services
 @inject WidgetFactoryService WidgetFactory
 
 <div id="container">
     <div id="subcontainer">
-        <ul>
+        @if (SettingsPanelVisible && @SelectedWidget != null)
+        {
+            <DynamicComponent Parameters="@DynamicParameters" Type="@(SelectedWidget.SubSettingsType)" />  
+            <button @onclick="OnValidateSettingsClick">Confirm</button>
+        } 
+        else
+        {
             @foreach (var widget in Widgets)
             {
-                <li>
-                    <div @onclick="@(() => OnAddWidgetClick(widget))">
-                        <h1>@(widget.FriendlyName)</h1>
-                        <p>@(widget.Description)</p>
-                    </div>
-                </li>
+            
+                <ul>
+                    <li>
+                        <div @onclick="@(() => OnAddWidgetClick(widget))">
+                            <h1>@(widget.FriendlyName)</h1>
+                            <p>@(widget.Description)</p>
+                        </div>
+                    </li>
+                </ul>
             }
-        </ul>
+        }   
     </div>
 </div>
 
 @code {
+
     [Parameter]
     public Action<WidgetModel, int>? OnAddWidget { get; set; }
 
     [Parameter]
     public int Index { get; set; }
 
+    private bool SettingsPanelVisible = false;
+
+    private WidgetModel SelectedWidget { get; set; }
+    private Dictionary<string, object> DynamicParameters = new Dictionary<string, object>();
     private List<WidgetModel> Widgets { get; set; } = new List<WidgetModel>();
 
     protected override void OnInitialized()
@@ -38,6 +53,13 @@
 
     private void OnAddWidgetClick(WidgetModel widget)
     {
-        OnAddWidget?.Invoke(widget, Index);
+        SelectedWidget = widget;
+        DynamicParameters.Add("Widget", widget);
+        SettingsPanelVisible = true;
+    }
+
+    private void OnValidateSettingsClick()
+    {
+        OnAddWidget?.Invoke(SelectedWidget, Index);
     }
 }

@@ -1,4 +1,6 @@
-﻿@using Dashboard.Models.WeatherApi
+﻿@using Dashboard.Models
+@using Dashboard.Models.WeatherApi
+@using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Services.Widget
 @inject WeatherService WeatherService
@@ -12,6 +14,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
     private Weather? Weather {  get;  set; }
 
     private async void OnRefreshTriggered()
@@ -31,7 +36,7 @@
     protected override async Task OnInitializedAsync()
     {
         // Make this a setting
-        Weather = await WeatherService.GetWeatherAsync("Toulouse");
+        Weather = await WeatherService.GetWeatherAsync((string)Widget.Settings["City"]);
         UpdateService.OnUpdateWidget += OnRefreshTriggered;
         await base.OnInitializedAsync();
     }
