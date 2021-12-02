@@ -95,12 +95,12 @@
 
     protected override async void OnAfterRender(bool firstRender)
     {
-        if (!(await LoadWidgetPanelLayout()))
+        if (firstRender && !(await LoadWidgetPanelLayout()))
         {
             for (int i = 0; i < Widgets.Length; i++)
                 Widgets[i] = null;
+            StateHasChanged();
         }
-        StateHasChanged();
         base.OnAfterRender(firstRender);
     }
 
