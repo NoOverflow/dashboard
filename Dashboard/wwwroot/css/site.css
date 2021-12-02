@@ -24,6 +24,10 @@ h1:focus {
     outline: none;
 }
 
+h1, h2, h3, h4, td, p {
+    color: white;
+}
+
 a, .btn-link {
     color: #0071c1;
 }
