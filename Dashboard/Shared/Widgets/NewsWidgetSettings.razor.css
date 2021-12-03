@@ -1,0 +1,16 @@
+﻿#container {
+    margin: auto;
+    left: 0;
+    right: 0;
+    cursor: default;
+    width: fit-content;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+select {
+    width: 100%;
+    margin-bottom: 20px;
+}

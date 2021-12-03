@@ -3,24 +3,27 @@
 @using Dashboard.Models.Widgets
 @inject Dashboard.Services.Widget.NYTimesService NewsService
 
-<h3>News Source</h3>
-<select @onchange="@((args) => Widget.Settings["Source"] = args.Value)">
-    <option value="all">All</option>
-    <option value="nyt">New York Times</option>
-    <option value="inyt">International New York Times</option>
-</select>
+<div id="container">
+    <h3>News Source</h3>
+    <select @onchange="@((args) => Widget.Settings["Source"] = args.Value)">
+        <option value="all">All</option>
+        <option value="nyt">New York Times</option>
+        <option value="inyt">International New York Times</option>
+    </select>
 
-<h3>News Section</h3>
-<select @onchange="@((args) => Widget.Settings["Section"] = args.Value)">
-    <option value="all">All</option>
-    @if (@Sections != null)
-    {
-        @foreach (var item in @Sections.Results)
+    <h3>News Section</h3>
+    <select @onchange="@((args) => Widget.Settings["Section"] = args.Value)">
+        <option value="all">All</option>
+        @if (@Sections != null)
         {
-            <option value="@item.Section">@item.DisplayName</option>
+            @foreach (var item in @Sections.Results)
+            {
+                <option value="@item.Section">@item.DisplayName</option>
+            }
         }
-    }
-</select>
+    </select>
+</div>
+
 
 @code {
     [Parameter]
