@@ -11,7 +11,7 @@ namespace Dashboard.Services
 {
     public class SpotifyService
     {
-        private const Services.ServiceType SERVICE = ServiceType.Spotify;
+        private const ServiceType SERVICE = ServiceType.Spotify;
 
         private readonly SessionState SessionState;
         private readonly UserManager<DashboardUser> _userManager;

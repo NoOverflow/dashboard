@@ -63,9 +63,6 @@ builder.Services.AddAuthentication()
         options.ClientSecret = builder.Configuration["Authentication:Google:secret"];
     });
 
-
-   
-
 builder.Services.AddScoped<OAuthManagerService>(provider => new OAuthManagerService(
         provider.GetService<IHttpClientFactory>(),
         provider.GetService<AuthenticationStateProvider>(),
@@ -112,6 +109,9 @@ builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
 ));
 
 // Register widgets
+builder.Services.AddSingleton<ServicesFactoryService>(provider => 
+new ServicesFactoryService().RegisterServiceType<>);
+
 builder.Services.AddSingleton<WidgetFactoryService>(provider =>
     new WidgetFactoryService()
         .RegisterWidgetType<NewsWidgetModel>()

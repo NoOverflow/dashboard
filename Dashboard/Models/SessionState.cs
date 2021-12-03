@@ -4,7 +4,7 @@ namespace Dashboard.Models
 {
     public class SessionState
     {
-        public Dictionary<Services.ServiceType, OAuthTransitory> OAuthStates;
+        public Dictionary<ServiceType, OAuthTransitory> OAuthStates;
 
         public SessionState()
         {

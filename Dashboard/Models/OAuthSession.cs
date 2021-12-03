@@ -16,7 +16,7 @@ namespace Dashboard.Models
         public string AccessToken { get; set; }
 
         [JsonIgnore]
-        public Services.ServiceType ServiceType { get; set; }
+        public ServiceType ServiceType { get; set; }
 
         [JsonIgnore]
         public string DashboardUserId { get; set; }
