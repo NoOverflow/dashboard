@@ -1,0 +1,11 @@
+﻿#container {
+    margin: auto;
+    left: 0;
+    right: 0;
+    cursor: default;
+    width: 420px;
+}
+
+#container > input {
+    width: 100%;
+}

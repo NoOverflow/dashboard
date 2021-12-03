@@ -8,7 +8,7 @@ namespace Dashboard.Models.Widgets
         public WeatherWidgetModel()
         {
             this.SubRendererType = typeof(WeatherWidget);
-            this.SubRendererType = typeof(WeatherWidgetSettings);
+            this.SubSettingsType = typeof(WeatherWidgetSettings);
             this.FriendlyName = "Weather";
             this.Description = "A weather widget using WeatherAPI";
             this.Settings = new Dictionary<string, object>();

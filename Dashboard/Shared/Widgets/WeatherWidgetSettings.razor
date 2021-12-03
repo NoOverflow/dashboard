@@ -1,5 +1,9 @@
 ﻿@using Dashboard.Models.Widgets
-<input type="text" @onchange="@((args) => Widget.Settings["City"] = args.Value)" />
+<div id="container">
+    <h3>City / Country / Known Location</h3>
+    <input type="text" @onchange="@((args) => Widget.Settings["City"] = args.Value)" />
+</div>
+
 
 @code {
     [Parameter]
