@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Spotify" Version="6.0.0" />
+    <PackageReference Include="Blazor.ContextMenu" Version="1.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.0" />

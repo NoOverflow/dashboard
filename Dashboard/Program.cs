@@ -34,6 +34,7 @@ builder.Services
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<SessionState>();
+builder.Services.AddBlazorContextMenu();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TestService>();

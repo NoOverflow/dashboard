@@ -2,12 +2,21 @@
 @using Dashboard.Models.Widgets
 @using Dashboard.Services
 @using Dashboard.Shared.Widgets
+@using BlazorContextMenu
 
-<div class="card draggable @Style" style="order: @OrderId;" draggable="true" id="content" 
-    ondragover="event.preventDefault();" 
-    @ondragstart="@OnDragStart" @ondrop="@OnDragDrop" @onclick="@OnClick">
-    <DynamicComponent Parameters="DynamicParameters" Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
-</div> 
+<ContextMenu Id="@("CtxMenu2" + @WidgetIndex)">
+    <Item>Configure Widget</Item>
+    <Item OnClick="@OnWidgetRemoveClick">Delete Widget</Item>
+</ContextMenu>
+
+
+<div class="card draggable @Style" style="order: @OrderId;" draggable="true" id="content"
+        ondragover="event.preventDefault();" 
+        @ondragstart="@OnDragStart" @ondrop="@OnDragDrop" @onclick="@OnClick">
+   <ContextMenuTrigger MenuId="@("CtxMenu2" + @WidgetIndex)">
+        <DynamicComponent Parameters="DynamicParameters" Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
+    </ContextMenuTrigger>
+</div>
 
 @code {
     [CascadingParameter]
@@ -27,6 +36,9 @@
 
     [Parameter]
     public Action<int>? OnWidgetAdderOpen { get; set; } = null;
+
+    [Parameter]
+    public Action<int>? OnWidgetRemove { get; set; } = null;
 
     private Guid WidgetId;
     private bool ShowMenu = false;
@@ -66,5 +78,12 @@
         if (Widget != null)
             return;
         OnWidgetAdderOpen?.Invoke(WidgetIndex);
+    }
+
+    void OnWidgetRemoveClick(ItemClickEventArgs e)
+    {
+        if (Widget == null)
+            return;
+        OnWidgetRemove?.Invoke(WidgetIndex);
     }
 }
