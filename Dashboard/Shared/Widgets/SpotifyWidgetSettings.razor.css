@@ -1,0 +1,13 @@
+﻿#container {
+    margin: auto;
+    left: 0;
+    right: 0;
+    cursor: default;
+    width: fit-content;
+}
+
+#container > label {
+    color: white;
+    font-size: 2vh;
+    margin-right: 20px;
+}

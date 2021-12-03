@@ -8,13 +8,12 @@
         @if ((SettingsPanelVisible || SkipToSettings) && @SelectedWidget != null)
         {
             <DynamicComponent Parameters="@DynamicParameters" Type="@(SelectedWidget.SubSettingsType)" />  
-            <button @onclick="OnValidateSettingsClick">Confirm</button>
+            <div id="confirm-button" @onclick="OnValidateSettingsClick"><p>Confirm</p></div>
         } 
         else
         {
             @foreach (var widget in Widgets)
             {
-            
                 <ul>
                     <li>
                         <div @onclick="@(() => OnAddWidgetClick(widget))">

@@ -42,3 +42,29 @@ ul {
 li {
     margin-top: 30px;
 }
+
+#confirm-button {
+    width: 104px;
+    height: 38px;
+    background: rgba(106, 106, 106, 0.74);
+    border-radius: 39px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    right: 0px;
+    position: absolute;
+}
+
+    #confirm-button > p {
+        position: inherit;
+        padding-top: 4px;
+        height: 100%;
+        font-size: 15px;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #FFFFFF;
+    }
