@@ -5,7 +5,7 @@
 @using BlazorContextMenu
 
 <ContextMenu Id="@("CtxMenu2" + @WidgetIndex)">
-    <Item>Configure Widget</Item>
+    <Item OnClick="@OnWidgetConfigureClick">Configure Widget</Item>
     <Item OnClick="@OnWidgetRemoveClick">Delete Widget</Item>
 </ContextMenu>
 
@@ -39,6 +39,9 @@
 
     [Parameter]
     public Action<int>? OnWidgetRemove { get; set; } = null;
+
+    [Parameter]
+    public Action<int>? OnWidgetConfigure { get; set; } = null;
 
     private Guid WidgetId;
     private bool ShowMenu = false;
@@ -85,5 +88,12 @@
         if (Widget == null)
             return;
         OnWidgetRemove?.Invoke(WidgetIndex);
+    }
+
+    void OnWidgetConfigureClick(ItemClickEventArgs e)
+    {
+        if (Widget == null)
+            return;
+        OnWidgetConfigure?.Invoke(WidgetIndex);
     }
 }

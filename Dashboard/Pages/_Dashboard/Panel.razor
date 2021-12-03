@@ -32,7 +32,7 @@
 
         @if (ShowWidgetAdderMenu)
         {
-            <WidgetAdder Index="@WidgetAdderIndex" OnAddWidget="OnAddWidget" />
+            <WidgetAdder SkipToSettings="@SkipToSettings" Index="@WidgetAdderIndex" OnAddWidget="OnAddWidget" />
         } 
         else
         {
@@ -40,21 +40,21 @@
             {
                 <div id="widgets">
                     <WidgetsContainer StyleId="top-widgets">
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="0" Style="top" Widget="@(Widgets[0])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="1" Style="top" Widget="@(Widgets[1])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="2" Style="top" Widget="@(Widgets[2])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="0" Style="top" Widget="@(Widgets[0])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="1" Style="top" Widget="@(Widgets[1])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="2" Style="top" Widget="@(Widgets[2])" />
                     </WidgetsContainer>
 
                     <WidgetsContainer StyleId="middle-widgets">
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="3" Style="middle-one" Widget="@(Widgets[3])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="4" Style="middle-two" Widget="@(Widgets[4])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="5" Style="middle-three" Widget="@(Widgets[5])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="3" Style="middle-one" Widget="@(Widgets[3])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="4" Style="middle-two" Widget="@(Widgets[4])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="5" Style="middle-three" Widget="@(Widgets[5])" />
                     </WidgetsContainer>
 
                     <WidgetsContainer StyleId="bottom-widgets">
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="6" Style="bottom-one" Widget="@(Widgets[6])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="7" Style="bottom-two" Widget="@(Widgets[7])" />
-                        <WidgetContainer OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="8" Style="bottom-three" Widget="@(Widgets[8])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="0" WidgetIndex="6" Style="bottom-one" Widget="@(Widgets[6])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="1" WidgetIndex="7" Style="bottom-two" Widget="@(Widgets[7])" />
+                        <WidgetContainer OnWidgetConfigure="OnConfigureWidget" OnWidgetAdderOpen="OnWidgetAdderOpen" OnWidgetRemove="OnRemoveWidget" OrderId="2" WidgetIndex="8" Style="bottom-three" Widget="@(Widgets[8])" />
                     </WidgetsContainer>
                 </div>
             }
@@ -75,7 +75,7 @@
 
     bool ShowServicesMenu = false;
     bool ShowWidgetAdderMenu = false;
-
+    bool SkipToSettings = false;
     private int WidgetAdderIndex = 0; 
 
     private async Task<bool> LoadWidgetPanelLayout()
@@ -136,6 +136,7 @@
 
     private void OnWidgetAdderOpen(int requestingWidgetIndex)
     {
+        SkipToSettings = false;
         WidgetAdderIndex = requestingWidgetIndex;
         ShowWidgetAdderMenu = true;
         StateHasChanged();
@@ -153,6 +154,14 @@
     {
         Widgets[index] = null;
         await SaveWidgetPanelLayout();
+        StateHasChanged();
+    }
+
+    private async void OnConfigureWidget(int index)
+    {
+        SkipToSettings = true;
+        WidgetAdderIndex = index;
+        ShowWidgetAdderMenu = true;
         StateHasChanged();
     }
 }
