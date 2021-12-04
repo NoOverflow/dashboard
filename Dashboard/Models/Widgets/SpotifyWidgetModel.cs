@@ -13,6 +13,10 @@ namespace Dashboard.Models.Widgets
             this.Description = "A reduced version of the spotify widget. See what you're listening to.";
             this.Settings = new Dictionary<string, object>();
             this.Settings["ShowAlbumName"] = false;
+            this.AllowedSizes = new WidgetSize[1]
+            {
+                WidgetSize.Small
+            };
         }
     }
 }

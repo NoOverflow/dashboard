@@ -2,6 +2,14 @@
 
 namespace Dashboard.Models.Widgets
 {
+    public enum WidgetSize
+    {
+        Small,
+        Medium,
+        Large,
+        Square
+    }
+
     public struct WidgetSetting
     {
 
@@ -39,6 +47,8 @@ namespace Dashboard.Models.Widgets
         /// The widgets description presented to the user
         /// </summary>
         public string? Description { get; set; }
+
+        public WidgetSize[] AllowedSizes { get; set; }
 
         public Dictionary<string, object?> Settings { get; set; }
     }

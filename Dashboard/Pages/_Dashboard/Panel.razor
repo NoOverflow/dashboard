@@ -32,7 +32,7 @@
 
         @if (ShowWidgetAdderMenu)
         {
-            <WidgetAdder SkipToSettings="@SkipToSettings" Index="@WidgetAdderIndex" OnAddWidget="OnAddWidget" />
+            <WidgetAdder WidgetSize="@WidgetSize" SkipToSettings="@SkipToSettings" Index="@WidgetAdderIndex" OnAddWidget="OnAddWidget" />
         } 
         else
         {
@@ -72,11 +72,18 @@
 
 @code {
     public WidgetModel?[] Widgets = null;
+    private WidgetSize[] WidgetsSizes = new WidgetSize[9]
+    {
+        WidgetSize.Small, WidgetSize.Small, WidgetSize.Small,
+        WidgetSize.Medium, WidgetSize.Large, WidgetSize.Square,
+        WidgetSize.Large, WidgetSize.Square, WidgetSize.Medium
+    };
 
-    bool ShowServicesMenu = false;
-    bool ShowWidgetAdderMenu = false;
-    bool SkipToSettings = false;
-    private int WidgetAdderIndex = 0; 
+    private bool ShowServicesMenu = false;
+    private bool ShowWidgetAdderMenu = false;
+    private bool SkipToSettings = false;
+    private int WidgetAdderIndex = 0;
+    private WidgetSize WidgetSize;
 
     private async Task<bool> LoadWidgetPanelLayout()
     {
@@ -138,6 +145,7 @@
     private void OnWidgetAdderOpen(int requestingWidgetIndex)
     {
         SkipToSettings = false;
+        WidgetSize = WidgetsSizes[requestingWidgetIndex];
         WidgetAdderIndex = requestingWidgetIndex;
         ShowWidgetAdderMenu = true;
         StateHasChanged();

@@ -14,6 +14,11 @@ namespace Dashboard.Models.Widgets
             this.Settings = new Dictionary<string, object>();
             this.Settings["Source"] = "all";
             this.Settings["Section"] = "all";
+            this.AllowedSizes = new WidgetSize[2]
+            {
+                WidgetSize.Medium,
+                WidgetSize.Large
+            };
         }    
     }
 }

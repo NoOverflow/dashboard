@@ -13,6 +13,10 @@ namespace Dashboard.Models.Widgets
             this.Description = "A weather widget using WeatherAPI";
             this.Settings = new Dictionary<string, object>();
             this.Settings["City"] = "Toulouse";
+            this.AllowedSizes = new WidgetSize[1]
+            {
+                WidgetSize.Large
+            };
         }
     }
 }

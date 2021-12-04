@@ -38,6 +38,9 @@
     [Parameter]
     public bool SkipToSettings { get; set; } = false;
 
+    [Parameter]
+    public WidgetSize WidgetSize { get; set; }
+
     private bool SettingsPanelVisible = false;
 
     private WidgetModel SelectedWidget { get; set; }
@@ -51,7 +54,10 @@
         {
             foreach (var widget in kvp.Value)
             {
-                Widgets.Add((WidgetModel)(Activator.CreateInstance(widget)!));
+                WidgetModel model = (WidgetModel)(Activator.CreateInstance(widget)!);
+
+                if (model.AllowedSizes.Contains(WidgetSize))
+                    Widgets.Add(model);
             }
             
         }
