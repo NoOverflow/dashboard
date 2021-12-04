@@ -4,18 +4,18 @@ namespace Dashboard.Models
 {
     public enum ServiceType
     {
-        Spotify
+        Spotify,
+        NYTimes,
+        WeatherApi
     }
 
-    public class ServiceModel
+    public static class ServiceModel
     {
-
-        /// <summary>
-        /// The display name of the service
-        /// </summary>
-        public string Name { get; set; }
-
-        public WidgetModel[] Widgets { get; set; }
-
+        public static Dictionary<ServiceType, string> ServicesNames = new Dictionary<ServiceType, string>()
+        {
+            {ServiceType.Spotify, "Spotify" },
+            {ServiceType.NYTimes, "New York Times" },
+            {ServiceType.WeatherApi, "Weather API" }
+        };
     }
 }

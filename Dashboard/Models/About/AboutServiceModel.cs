@@ -11,13 +11,10 @@ namespace Dashboard.Models
         [JsonProperty("widgets")]
         public AboutWidgetModel[] Widgets { get; set; }
 
-        public static explicit operator AboutServiceModel(ServiceModel service)
+        public AboutServiceModel(string name, AboutWidgetModel[] widgets)
         {
-            AboutServiceModel aboutService = new AboutServiceModel();
-
-            aboutService.Name = service.Name;
-            aboutService.Widgets = (AboutWidgetModel[])service.Widgets.Cast<AboutWidgetModel>();
-            return aboutService;
+            this.Name = name;
+            this.Widgets = widgets;
         }
     }
 }

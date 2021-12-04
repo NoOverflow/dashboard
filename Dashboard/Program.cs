@@ -109,18 +109,14 @@ builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
 ));
 
 // Register widgets
-builder.Services.AddSingleton<ServicesFactoryService>(provider => 
-new ServicesFactoryService().RegisterServiceType<>);
-
-builder.Services.AddSingleton<WidgetFactoryService>(provider =>
-    new WidgetFactoryService()
-        .RegisterWidgetType<NewsWidgetModel>()
-        .RegisterWidgetType<SpotifyWidgetModel>()
-        .RegisterWidgetType<WeatherWidgetModel>()
+builder.Services.AddSingleton<ServicesFactoryService>(provider =>
+    new ServicesFactoryService()
+        .RegisterServiceType(ServiceType.Spotify, typeof(SpotifyWidgetModel))
+        .RegisterServiceType(ServiceType.WeatherApi, typeof(WeatherWidgetModel))
+        .RegisterServiceType(ServiceType.NYTimes, typeof(NewsWidgetModel))
 );
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

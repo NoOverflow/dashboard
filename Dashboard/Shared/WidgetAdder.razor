@@ -1,7 +1,7 @@
 ﻿@using Dashboard.Models
 @using Dashboard.Models.Widgets
 @using Dashboard.Services
-@inject WidgetFactoryService WidgetFactory
+@inject ServicesFactoryService ServiceFactory
 
 <div id="container">
     <div id="subcontainer">
@@ -47,9 +47,13 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        foreach (Type widgetType in WidgetFactory.WidgetsTypesList)
+        foreach (var kvp in ServiceFactory.ServicesTypesList)
         {
-            Widgets.Add((WidgetModel)(Activator.CreateInstance(widgetType)!));
+            foreach (var widget in kvp.Value)
+            {
+                Widgets.Add((WidgetModel)(Activator.CreateInstance(widget)!));
+            }
+            
         }
     }
 

@@ -2,6 +2,22 @@
 
 namespace Dashboard.Models.Widgets
 {
+    public struct WidgetSetting
+    {
+
+        [JsonProperty("Type")]
+        public string Type { get; set; }
+
+        [JsonIgnore]
+        public object? Value { get; set; } 
+
+        public WidgetSetting(string type, object? value)
+        {
+            this.Type = type;
+            this.Value = value;
+        }
+    }
+
     public class WidgetModel
     {
         /// <summary>
@@ -24,6 +40,6 @@ namespace Dashboard.Models.Widgets
         /// </summary>
         public string? Description { get; set; }
 
-        public Dictionary<string, object> Settings { get; set; }
+        public Dictionary<string, object?> Settings { get; set; }
     }
 }
