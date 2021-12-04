@@ -9,8 +9,10 @@
 <div>
     <h2>@(Weather == null ? "" : 
         Weather.Location.Name + ", " + Weather.Location.Country)</h2> 
-    <h1>@(Weather == null ? "" : Weather.Current.TempC + "°c")</h1>
-    <p>@(Weather == null ? "" : Weather.Current.Condition.Text)</p>
+    <div id="temp">
+        <h1>@(Weather == null ? "" : Weather.Current.TempC + "°c")</h1>
+        <p>@(Weather == null ? "" : Weather.Current.Condition.Text)</p>
+    </div>
 </div>
 
 @code {
