@@ -1,0 +1,50 @@
+﻿@using Dashboard.Models.Widgets
+@using Dashboard.Models.YouTube
+@using Dashboard.Services
+@using Dashboard.Services.Widget
+@inject YouTubeService YouTubeService
+@inject UpdateService UpdateService
+
+<h3>@(Channel == null ? "Loading..." : ChannelItem.Snippet.ChannelTitle)</h3>
+<p>Subscribers: @(ChannelItem == null ? "Loading..." : Channel.Statistics.SubscriberCount)</p>
+
+@code {
+
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
+    private Channel? Channel { get; set; } = null;
+    private Item? ChannelItem { get; set; } = null;
+
+    private async void OnRefreshTriggered()
+    {
+        /* if (++CurrentNewsIndex >= Content.Results.Length)
+            CurrentNewsIndex = 0;
+        await this.InvokeAsync(StateHasChanged);*/
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        // Make this a setting
+        SearchResult? sresult = await YouTubeService.SearchAsync((string)Widget.Settings["ChannelName"], "channel");
+
+        if (sresult == null || sresult.Items.Length == 0)
+            return;
+        ChannelItem = sresult.Items[0];
+
+        ChannelListResult? clResult = await YouTubeService.ListChannelAsync(ChannelItem.Id.ChannelId);
+
+        if (clResult == null)
+            return;
+        Channel = clResult.Items[0];
+        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        
+    }
+}

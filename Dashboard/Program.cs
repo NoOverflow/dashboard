@@ -108,12 +108,19 @@ builder.Services.AddScoped<SpotifyService>(provider => new SpotifyService(
     provider.GetService<SessionState>()
 ));
 
+builder.Services.AddScoped<YouTubeService>(provider => new YouTubeService(
+    provider.GetService<IHttpClientFactory>(),
+    "https://www.googleapis.com/youtube/v3",
+    builder.Configuration["youtube-api-key"]
+));
+
 // Register widgets
 builder.Services.AddSingleton<ServicesFactoryService>(provider =>
     new ServicesFactoryService()
         .RegisterServiceType(ServiceType.Spotify, typeof(SpotifyWidgetModel))
         .RegisterServiceType(ServiceType.WeatherApi, typeof(WeatherWidgetModel))
         .RegisterServiceType(ServiceType.NYTimes, typeof(NewsWidgetModel))
+        .RegisterServiceType(ServiceType.YouTube, typeof(YouTubeWidgetModel))
 );
 
 var app = builder.Build();
