@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dashboard/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    volumes:
+      - ${HOME}/.microsoft/usersecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json:/root/.microsoft/usersecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json
+
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "_Admin123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
