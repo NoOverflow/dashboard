@@ -7,10 +7,13 @@ namespace Dashboard.Models.Widgets
         public GasPriceWidgetModel()
         {
             this.SubRendererType = typeof(ETHGasWidget);
-            this.SubSettingsType = typeof(SpotifyWidgetSettings);
+            this.SubSettingsType = typeof(ETHGasWidgetSettings);
             this.FriendlyName = "ETH Gas Price";
             this.Description = "Display Ethereum transfer gas prices in realtime";
-            this.Settings = new Dictionary<string, object?>();
+            this.Settings = new Dictionary<string, object?>()
+            {
+                { "ShowFastest", false }
+            };
             this.AllowedSizes = new WidgetSize[1]
             {
                 WidgetSize.Square

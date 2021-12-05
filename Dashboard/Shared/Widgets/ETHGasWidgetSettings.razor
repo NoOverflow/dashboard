@@ -1,8 +1,8 @@
 ﻿@using Dashboard.Models.Widgets
 
 <div id="container">
-    <h3>Channel Name</h3>
-    <input type="text" @onchange="@((args) => Widget.Settings["ChannelName"] = args.Value)" />
+    <label for="showfastest">Use Fastest instead of Fast</label>
+    <input name="showfastest" type="checkbox" @onchange="@((args) => Widget.Settings["ShowFastest"] = args.Value)">Use Fastest instead of Fast</input>
 </div>
 
 
@@ -12,7 +12,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Widget.Settings["ChannelName"] = "YouTube";
+        Widget.Settings["ShowFastest"] = false;
         await base.OnInitializedAsync();
     }
 }

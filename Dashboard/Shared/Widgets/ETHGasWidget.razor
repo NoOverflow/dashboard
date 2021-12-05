@@ -8,8 +8,8 @@
 
 <div id="container">
     <div class="gas">
-        <h3>Fast</h3>
-        <p>@(GasPrice == null ? 0 : GasPrice.Fast / 10) GWEI</p>
+        <h3>@((bool)Widget.Settings["ShowFastest"] ? "Fastest" : "Fast")</h3>
+        <p>@(GasPrice == null ? 0 : ((bool)Widget.Settings["ShowFastest"] ? GasPrice.Fastest : GasPrice.Fast) / 10) GWEI</p>
     </div>
     <div class="separator"></div>
     <div class="gas">
