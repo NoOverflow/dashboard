@@ -5,8 +5,10 @@
 @inject YouTubeService YouTubeService
 @inject UpdateService UpdateService
 
-<h3>@(Channel == null ? "Loading..." : ChannelItem.Snippet.ChannelTitle)</h3>
-<p>Subscribers: @(ChannelItem == null ? "Loading..." : Channel.Statistics.SubscriberCount)</p>
+<div id="container">
+    <h3>@(Channel == null ? "Loading..." : ChannelItem.Snippet.ChannelTitle)</h3>
+    <p>Subscribers: @(ChannelItem == null ? "Loading..." : Channel.Statistics.SubscriberCount)</p>
+</div>
 
 @code {
 
