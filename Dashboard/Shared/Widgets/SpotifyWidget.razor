@@ -52,7 +52,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        await PopulateTrack();
+        UpdateService.Subscribe(Widget!, OnRefreshTriggered);
         await base.OnInitializedAsync();
     }
 

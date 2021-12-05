@@ -20,9 +20,7 @@
 
     private async void OnRefreshTriggered()
     {
-        /* if (++CurrentNewsIndex >= Content.Results.Length)
-            CurrentNewsIndex = 0;
-        await this.InvokeAsync(StateHasChanged);*/
+        await this.InvokeAsync(Update);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -30,10 +28,8 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    protected override async Task OnInitializedAsync()
+    private async Task Update()
     {
-        await base.OnInitializedAsync();
-
         // Make this a setting
         SearchResult? sresult = await YouTubeService.SearchAsync((string)Widget.Settings["ChannelName"], "channel");
 
@@ -46,7 +42,14 @@
         if (clResult == null)
             return;
         Channel = clResult.Items[0];
-        UpdateService.OnUpdateWidget += OnRefreshTriggered;
-        
+        await this.InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Update();
+        UpdateService.Subscribe(Widget!, OnRefreshTriggered); 
     }
 }

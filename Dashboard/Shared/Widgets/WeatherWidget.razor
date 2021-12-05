@@ -25,9 +25,8 @@
     {
         if (Weather == null)
             return;
-        /* if (++CurrentNewsIndex >= Content.Results.Length)
-            CurrentNewsIndex = 0;
-        await this.InvokeAsync(StateHasChanged);*/
+        Weather = await WeatherService.GetWeatherAsync((string)Widget.Settings["City"]);
+        await this.InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -39,7 +38,7 @@
     {
         // Make this a setting
         Weather = await WeatherService.GetWeatherAsync((string)Widget.Settings["City"]);
-        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        UpdateService.Subscribe(Widget!, OnRefreshTriggered); 
         await base.OnInitializedAsync();
     }
 }

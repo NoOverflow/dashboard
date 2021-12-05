@@ -14,6 +14,7 @@ namespace Dashboard.Models.Widgets
             this.Settings = new Dictionary<string, object>();
             this.Settings["Source"] = "all";
             this.Settings["Section"] = "all";
+            this.RefreshRate = TimeSpan.FromHours(1);
             this.AllowedSizes = new WidgetSize[2]
             {
                 WidgetSize.Medium,

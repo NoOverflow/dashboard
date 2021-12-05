@@ -27,11 +27,12 @@
     {
         if (Content == null)
             return;
-        /* if (++CurrentNewsIndex >= Content.Results.Length)
-            CurrentNewsIndex = 0;
-        await this.InvokeAsync(StateHasChanged);*/
+        if (Widget != null && !ContentSet)
+        {
+            Content = await NYTimesService.GetLiveContentAsync((string)Widget.Settings["Source"], (string)Widget.Settings["Section"]);
+            ContentSet = true;
+        }
     }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,7 +41,7 @@
             Content = await NYTimesService.GetLiveContentAsync((string)Widget.Settings["Source"], (string)Widget.Settings["Section"]);
             ContentSet = true;
         }
-        UpdateService.OnUpdateWidget += OnRefreshTriggered;
+        UpdateService.Subscribe(Widget!, OnRefreshTriggered); 
         await base.OnInitializedAsync();
     }
 }

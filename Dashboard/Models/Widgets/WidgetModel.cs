@@ -48,8 +48,12 @@ namespace Dashboard.Models.Widgets
         /// </summary>
         public string? Description { get; set; }
 
+        public TimeSpan? RefreshRate { get; set; }
+
         public WidgetSize[] AllowedSizes { get; set; }
 
         public Dictionary<string, object?> Settings { get; set; }
+
+        public Guid Id = Guid.NewGuid();
     }
 }

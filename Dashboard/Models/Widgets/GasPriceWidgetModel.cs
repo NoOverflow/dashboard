@@ -10,6 +10,7 @@ namespace Dashboard.Models.Widgets
             this.SubSettingsType = typeof(ETHGasWidgetSettings);
             this.FriendlyName = "ETH Gas Price";
             this.Description = "Display Ethereum transfer gas prices in realtime";
+            this.RefreshRate = TimeSpan.FromMinutes(2);
             this.Settings = new Dictionary<string, object?>()
             {
                 { "ShowFastest", false }

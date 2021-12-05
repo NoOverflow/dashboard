@@ -14,6 +14,7 @@ namespace Dashboard.Models.Widgets
             };
             this.SubSettingsType = typeof(YoutubeWidgetSettings);
             this.SubRendererType = typeof(YouTubeWidget);
+            this.RefreshRate = TimeSpan.FromMinutes(2);
             this.Settings = new Dictionary<string, object?>()
             {
                 {"ChannelName", "YouTube" }
