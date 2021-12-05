@@ -42,3 +42,7 @@ Then proceed as usual with
 
     docker-compose up --build
 
+
+## Use the app
+
+You will need to use Chrome or Opera or anything that is not Firefox, as we used some features only available on them (And mozilla is still sleeping)
