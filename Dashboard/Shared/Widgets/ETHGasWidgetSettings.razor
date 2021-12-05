@@ -1,0 +1,18 @@
+﻿@using Dashboard.Models.Widgets
+
+<div id="container">
+    <h3>Channel Name</h3>
+    <input type="text" @onchange="@((args) => Widget.Settings["ChannelName"] = args.Value)" />
+</div>
+
+
+@code {
+    [Parameter]
+    public WidgetModel Widget { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Widget.Settings["ChannelName"] = "YouTube";
+        await base.OnInitializedAsync();
+    }
+}

@@ -114,6 +114,12 @@ builder.Services.AddScoped<YouTubeService>(provider => new YouTubeService(
     builder.Configuration["youtube-api-key"]
 ));
 
+builder.Services.AddScoped<ETHGasStationService>(provider => new ETHGasStationService(
+    provider.GetService<IHttpClientFactory>(),
+    "https://ethgasstation.info",
+    builder.Configuration["ethgas-api-key"]
+));
+
 // Register widgets
 builder.Services.AddSingleton<ServicesFactoryService>(provider =>
     new ServicesFactoryService()
@@ -121,6 +127,7 @@ builder.Services.AddSingleton<ServicesFactoryService>(provider =>
         .RegisterServiceType(ServiceType.WeatherApi, typeof(WeatherWidgetModel))
         .RegisterServiceType(ServiceType.NYTimes, typeof(NewsWidgetModel))
         .RegisterServiceType(ServiceType.YouTube, typeof(YouTubeWidgetModel))
+        .RegisterServiceType(ServiceType.ETHGasStation, typeof(GasPriceWidgetModel))
 );
 
 var app = builder.Build();

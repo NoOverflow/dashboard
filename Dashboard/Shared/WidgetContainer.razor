@@ -10,10 +10,10 @@
 </ContextMenu>
 
 
-<div class="card draggable @Style" style="order: @OrderId;" draggable="true" id="content"
+<div class="card draggable @Style" style="order: @OrderId; height: 100%;" draggable="true" id="content"
         ondragover="event.preventDefault();" 
         @ondragstart="@OnDragStart" @ondrop="@OnDragDrop" @onclick="@OnClick">
-   <ContextMenuTrigger MenuId="@("CtxMenu2" + @WidgetIndex)">
+   <ContextMenuTrigger CssClass="test" MenuId="@("CtxMenu2" + @WidgetIndex)">
         <DynamicComponent Parameters="DynamicParameters" Type="@((Widget == null ? new AddWidgetModel() : Widget).SubRendererType)" />   
     </ContextMenuTrigger>
 </div>

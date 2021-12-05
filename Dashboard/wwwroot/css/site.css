@@ -4,6 +4,10 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.test {
+    height: 100%;
+}
+
 body {
     width: 100%;
     height: 100%;

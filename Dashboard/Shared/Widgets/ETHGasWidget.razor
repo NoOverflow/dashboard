@@ -1,0 +1,50 @@
+﻿@using Dashboard.Models.ETH
+@using Dashboard.Models.Widgets
+@using Dashboard.Models.YouTube
+@using Dashboard.Services
+@using Dashboard.Services.Widget
+@inject ETHGasStationService ETHGasService
+@inject UpdateService UpdateService
+
+<div id="container">
+    <div class="gas">
+        <h3>Fast</h3>
+        <p>@(GasPrice == null ? 0 : GasPrice.Fast / 10) GWEI</p>
+    </div>
+    <div class="separator"></div>
+    <div class="gas">
+        <h3>Average</h3>
+        <p>@(GasPrice == null ? 0 : GasPrice.Average / 10) GWEI</p>
+    </div>
+    <div class="separator"></div>
+    <div class="gas">
+        <h3>Slow</h3>
+        <p>@(GasPrice == null ? 0 : GasPrice.SafeLow / 10) GWEI</p>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public WidgetModel? Widget { get; set; }
+
+    private GasPrice? GasPrice { get; set; } = null;
+
+    private async void OnRefreshTriggered()
+    {
+        /* if (++CurrentNewsIndex >= Content.Results.Length)
+            CurrentNewsIndex = 0;
+        await this.InvokeAsync(StateHasChanged);*/
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        GasPrice = await ETHGasService.GetGasPriceAsync();
+    }
+}

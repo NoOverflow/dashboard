@@ -7,7 +7,8 @@ namespace Dashboard.Models
         Spotify,
         NYTimes,
         WeatherApi,
-        YouTube
+        YouTube,
+        ETHGasStation
     }
 
     public static class ServiceModel
@@ -17,7 +18,8 @@ namespace Dashboard.Models
             { ServiceType.Spotify, "Spotify" },
             { ServiceType.NYTimes, "New York Times" },
             { ServiceType.WeatherApi, "Weather API" },
-            { ServiceType.YouTube, "YouTube" }
+            { ServiceType.YouTube, "YouTube" },
+            { ServiceType.ETHGasStation, "Ethereum Gas Station" }
         };
     }
 }

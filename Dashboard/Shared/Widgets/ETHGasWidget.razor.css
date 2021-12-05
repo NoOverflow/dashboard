@@ -1,0 +1,49 @@
+﻿#container {
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
+.separator {
+    width: 80%;
+    border: 1px solid;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    left: 0;
+    right: 0;
+}
+
+p {
+    position: absolute;
+    right: 0;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18.66px;
+    line-height: 22px;
+    color: #BEBEBE;
+    margin-right: 20px;
+}
+
+h3 {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20.7333px;
+    line-height: 24px;
+    color: #FFFFFF;
+    margin-left: 20px;
+}
+
+.gas {
+    display: inline-flex;
+}

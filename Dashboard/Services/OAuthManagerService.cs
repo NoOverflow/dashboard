@@ -81,8 +81,6 @@ namespace Dashboard.Services
 
         public HttpClient GetApiClient(ServiceType type)
         {
-            // Make sure to preload the client with the right token
-
             return HttpClients[type];
         }
 
@@ -112,7 +110,6 @@ namespace Dashboard.Services
 
         public async Task<OAuthSession> RefreshToken(ServiceType type, ClaimsPrincipal claims)
         {
-            // BLAZOR IS UTTER TRASH var claims = await _authStateProvider.GetAuthenticationStateAsync();
             DashboardUser u = await _userManager.GetUserAsync(claims);
             DashboardUser user = await _userManager.FindByIdAsync(u.Id);
 
@@ -135,7 +132,6 @@ namespace Dashboard.Services
 
             userSession.AccessToken = session.AccessToken;
             HttpClients[type].DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
-            // await UpdateOAuthSession(type, userSession, claims);
             return session;
         }
 
