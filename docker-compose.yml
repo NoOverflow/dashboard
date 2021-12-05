@@ -5,13 +5,13 @@ services:
       context: .
       dockerfile: Dashboard/Dockerfile
     ports:
-      - "5000:5000"
+      - "8080:8080"
     depends_on:
       - db
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     volumes:
-      - ${HOME}/.microsoft/usersecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json:/root/.microsoft/usersecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json
+      - C:/Users/Kadau/AppData/Roaming/Microsoft/UserSecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json:/root/.microsoft/usersecrets/c0f9c504-637f-4774-ac30-d88a5157d99e/secrets.json
 
   db:
     image: "mcr.microsoft.com/mssql/server"
