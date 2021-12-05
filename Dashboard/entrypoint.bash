@@ -15,4 +15,4 @@ done
 >&2 echo "SQL Server is up - executing command"
 
 cd /app/publish
-dotnet Dashboard.dll
+dotnet Dashboard.dll --urls="http://*:8080"
