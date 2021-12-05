@@ -42,7 +42,20 @@ Then proceed as usual with
 
     docker-compose up --build
 
+## Available services
 
-## Use the app
+### Youtube Service
+ - YouTube widget, allowing you to see a channel's subscribers count
 
-You will need to use Chrome or Opera or anything that is not Firefox, as we used some features only available on them (And mozilla is still sleeping)
+### WeatherAPI Service
+ - Large Weather Widget
+ - Small Weather Widget
+
+### NY Times Service
+- New York Times Widget
+
+### Spotify Service
+- Spotify Widget, see what you're listening to, play / pause.
+### ETHGasStation Service
+- Gas price service, see ETH gas prices and consumption in realtime.
+
