@@ -1,5 +1,8 @@
 # Dashboard
 
+## Context
+This project was made during my time at Epitech, under a certain time constraint. Looking back at it, this would be made entirely differently. This is just here for reference and archiving purpose.
+
 ## Build the required docker
 To host the .NET Core application, we provided a docker compose file, but first some steps are necessary:
 ### Secrets setup
